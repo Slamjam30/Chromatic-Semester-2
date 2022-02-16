@@ -4,37 +4,33 @@ using UnityEngine;
 
 public class WaterPhysics : MonoBehaviour
 {
-    //To swim higher, press space
-    //ADD COLLISION IN MOVEMENT SCRIPT TO ENABLE INFINITE JUMPS ONTRIGGERSTAY2D
+    //NOTE: Better to use only ONE WaterPhysics object, or else it may put bool swimming as false when you leave one and enter the other
 
-    private float gravScale = 1;
-    public float xForce;
-    public float yForce;
-    private Vector2 outofwater;
-    
+    private float startGravScale;
+    [SerializeField] float gravScale = 0.5f;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        //So that don't have to start entering decimals in the X_ and Y_ force public input
-        xForce = xForce * 0.025f;
-        yForce = yForce * 0.025f;
+        startGravScale = GameObject.Find("MainCharacter").GetComponent<Rigidbody2D>().gravityScale;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.attachedRigidbody == true)
         {
-            //Using Translate and not AddForce, because we want a constant movement, not an acceleration
-            collision.attachedRigidbody.transform.Translate(new Vector2(xForce, 0));
-            collision.attachedRigidbody.AddForce(new Vector2(0, yForce), ForceMode2D.Impulse);
-            collision.attachedRigidbody.gravityScale = -0.2f;
+            collision.attachedRigidbody.gravityScale = gravScale;
+            if (collision.GetComponent<Movement>() != null)
+            {
+                collision.GetComponent<Movement>().swimming = true;
+            }
 
         }
     }
@@ -43,13 +39,14 @@ public class WaterPhysics : MonoBehaviour
     {
         if (collision.attachedRigidbody == true)
         {
-            collision.attachedRigidbody.gravityScale = gravScale;
-            collision.attachedRigidbody.velocity = new Vector2(collision.attachedRigidbody.velocity.x, 5);
+            collision.attachedRigidbody.gravityScale = startGravScale;
+            if (collision.GetComponent<Movement>() != null)
+            {
+                collision.GetComponent<Movement>().swimming = false;
+            }
         }
 
 
     }
-
-
 
 }
