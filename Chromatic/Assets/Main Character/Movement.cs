@@ -21,6 +21,7 @@ public class Movement : MonoBehaviour
     private Animator am;
     private SpriteRenderer sr;
     public int KillsForUnfreeze;
+    public bool swimming = false;
 
     // Start is called before the first frame update
     void Start()
@@ -65,14 +66,15 @@ public class Movement : MonoBehaviour
         }
 
 
-        if (Input.GetKeyDown(KeyCode.Space) && !climbing)
+        if (Input.GetKeyDown(KeyCode.Space) && !climbing && !swimming)
         {
             // Calls FeetCollider.cs and allows double jump.
             this.transform.GetChild(0).GetComponent<FeetCollider>().DoubleJump();
             am.SetInteger("Current", 1);
         }
   
-        
+        //Climbing
+
         if (currentSprite != null && currentSprite.Equals(vine) && !climbing)
         {
             climbing = true;
@@ -92,7 +94,6 @@ public class Movement : MonoBehaviour
         move = new Vector2(xSpeed, ySpeed);
         transform.Translate(move * Time.deltaTime * moveSpeed);
 
-        
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
