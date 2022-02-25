@@ -44,10 +44,20 @@ public class Health : MonoBehaviour
 
         if(gameObject.tag == "Player" && !playerHit)
         {
-            playerHit = true;
-            ProcessHit(damageDealer.GetDamage());
-            StartCoroutine(PlayerImmunity());
-            return;
+            if (gameObject.GetComponent<Bubble>().triggered)
+            {
+                gameObject.GetComponent<Bubble>().triggered = false;
+                StartCoroutine(gameObject.GetComponent<Bubble>().Cooldown());
+                StartCoroutine(PlayerImmunity());
+                return;
+            }
+            else
+            {
+                playerHit = true;
+                ProcessHit(damageDealer.GetDamage());
+                StartCoroutine(PlayerImmunity());
+                return;
+            }
         }
 
         if(gameObject.tag == "Player" && playerHit)
