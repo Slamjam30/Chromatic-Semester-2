@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DragonFly : MonoBehaviour
+public class DragonFlyOLD : MonoBehaviour
 {
     private GameObject mainCharacter;
     [SerializeField] float moveXRight = 5f;
@@ -13,12 +13,13 @@ public class DragonFly : MonoBehaviour
 
     Vector3 waypointRight;
     Vector3 waypointLeft;
-    Vector3 moveDistanceRight;
-    Vector3 moveDistanceLeft;
+    Vector3 moveDistanceRight; 
+    Vector3 moveDistanceLeft; 
     private Rigidbody2D rb;
     private SpriteRenderer sr;
 
     // flying variables
+    private bool flying = false;
     private float gravScale;
     [Header("Adjust Flap Speed and Rigidbody gravity scale")]
     [SerializeField] float flapSpeed = 2.1f;
@@ -27,7 +28,7 @@ public class DragonFly : MonoBehaviour
     private bool diving;
     private bool positionsGrabbed = false;
     private bool moveTowardsPlayer = true;
-    private bool moveTowardsStart = false;
+    private bool moveTowardsStart = true;
     private bool diveWait = true;
     private bool diveWaitDone = false;
 
@@ -43,30 +44,33 @@ public class DragonFly : MonoBehaviour
         waypointRight = this.transform.position + moveDistanceRight;
         waypointLeft = this.transform.position - moveDistanceLeft;
 
+
+        if (gameObject.tag == "Flying Enemy")
+        {
+            flying = true;
+        }
+
         StartCoroutine(Dive());
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Mathf.Abs(mainCharacter.transform.position.x - gameObject.transform.position.x) <= 10)
+        if (flying)
         {
-            //diving is true after Start()
-            if (diving)
-            {
+            if(diving)
+            {                
                 rb.gravityScale = 0;
                 rb.velocity = new Vector2(0, 0);
                 rb.inertia = 0;
 
-                //diveWait starts as true
                 if (diveWait)
-                { StartCoroutine(DiveWait()); }
+                {StartCoroutine(DiveWait());}
 
-                //diveWaitDone is turned to true after a time in Coroutine(DiveWait())
                 if (diveWaitDone)
                 {
-                    //positionsGrabbed starts as false
-                    if (!positionsGrabbed)
+
+                    if(!positionsGrabbed)
                     {
                         startPosition = gameObject.transform.position;
                         playerPosition = mainCharacter.transform.position;
@@ -76,32 +80,22 @@ public class DragonFly : MonoBehaviour
                     var step = moveSpeed * 3f * Time.deltaTime;
                     if (transform.position != playerPosition && moveTowardsPlayer)
                     {
-                        //Moves towards the player using variable step (relying on moveSpeed)
                         transform.position = Vector2.MoveTowards(transform.position, playerPosition, step);
 
                         if (transform.position == playerPosition)
-                        {
-                            moveTowardsPlayer = false;
-                            moveTowardsStart = true;
-                        }
+                        {moveTowardsPlayer = false;}
                     }
 
                     step = moveSpeed * Time.deltaTime;
                     if (transform.position != startPosition && moveTowardsStart)
                     {
-                        //Moves towards its start position DOESN"T MOVE IN NEGATIVE DIRECTION?
                         transform.position = Vector2.MoveTowards(transform.position, startPosition, step);
 
-                        //has a weird glitch where it will stop moving in X direction to move towards, so just test if it reaches its same y position
-
-                        if (Mathf.Abs(transform.position.y - startPosition.y) < 0.2f)
-                        { moveTowardsStart = false; }
-
-                        
-
+                        if (transform.position == startPosition)
+                        {moveTowardsStart = false;}
                     }
 
-                    if (!moveTowardsStart && !moveTowardsPlayer)
+                    if (!moveTowardsStart)
                     {
                         rb.inertia = 1;
                         rb.gravityScale = gravScale;
@@ -111,35 +105,30 @@ public class DragonFly : MonoBehaviour
                         positionsGrabbed = false;
                         moveTowardsPlayer = true;
                         moveTowardsStart = true;
-
+                        
                         StartCoroutine(Dive());
                     }
                 }
             }
-        }
 
-        if (!diving)
-        {
-            if (transform.position.y < waypointRight.y - .5f)
+            if (!diving)
             {
-                rb.velocity = new Vector2(0, flapSpeed);
+                if (transform.position.y < waypointRight.y - .5f)
+                {
+                    rb.velocity = new Vector2(0, flapSpeed);
+                }
+                UpdateX();
             }
-            UpdateX();
         }
 
         else
         {
-            UpdateX();
+        UpdateX();
         }
-
     }
-    
-            
 
-    
     private void UpdateX()
     {
-        //UpdateX is only called when not diving
         if (transform.position.x < waypointRight.x && direction == "right")
         {
             MoveRight();
@@ -164,16 +153,16 @@ public class DragonFly : MonoBehaviour
     }
 
     private void MoveRight()
-    {
-        var step = moveSpeed * Time.deltaTime;
-        transform.position = Vector2.MoveTowards(transform.position, new Vector3(waypointRight.x, transform.position.y, transform.position.z), step);
+    {       
+            var step = moveSpeed * Time.deltaTime;
+            transform.position = Vector2.MoveTowards(transform.position, new Vector3(waypointRight.x, transform.position.y, transform.position.z), step);
 
     }
 
     private void MoveLeft()
     {
-        var step = moveSpeed * Time.deltaTime;
-        transform.position = Vector2.MoveTowards(transform.position, new Vector3(waypointLeft.x, transform.position.y, transform.position.z), step);
+            var step = moveSpeed * Time.deltaTime;
+            transform.position = Vector2.MoveTowards(transform.position, new Vector3(waypointLeft.x, transform.position.y, transform.position.z), step);
     }
 
     private IEnumerator Dive()
