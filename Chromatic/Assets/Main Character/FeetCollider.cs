@@ -23,19 +23,23 @@ public class FeetCollider : MonoBehaviour
         // Resets jump for the collider off the feet
         
         jumpCounter = 2;
-        am.SetInteger("Current", 0);
-        am.SetInteger("DoubleJump", 0);
+        am.SetBool("isJumping", false);
+        am.SetBool("isDoubleJump", false);
+       // am.SetInteger("Current", 0);
+       // am.SetInteger("DoubleJump", 0);
     }
 
     public void DoubleJump()
     {
         if (jumpCounter != 0)
         {
-            am.SetInteger("DoubleJump", 1);
+            //am.SetInteger("DoubleJump", 1);
+            am.SetBool("isJumping", true);
             rb.velocity = new Vector2(rb.velocity.x, 0);
             rb.AddForce(new Vector2(0, 8), ForceMode2D.Impulse);
             if (jumpCounter == 1)
             {
+                am.SetBool("isDoubleJump", true);
                 //Adding more force to second jump to combat gravity
                 rb.AddForce(new Vector2(0, 2), ForceMode2D.Impulse);
             }

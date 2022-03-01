@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Bubble : MonoBehaviour
 {
-    //bubb is the bubble spirte- a child object of the main character
+    //bubb is the bubble sprite- a child object of the main character
     public GameObject bubb;
     private Rigidbody2D rigBody;
     [SerializeField] float acceleration = 3.5f;
@@ -22,16 +22,20 @@ public class Bubble : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (cooled && Input.GetKeyDown(KeyCode.T))
-        { triggered = !triggered; }
+        if (cooled && Input.GetKey(KeyCode.T))
+        { triggered = true; }
+        else { triggered = false; }
 
         if (triggered == true)
         {
             bubb.SetActive(true);
             if (gameObject.GetComponent<Movement>().swimming == true)
             {
-                //somehow set vertical movement to yes
-                //works up to here somehow lol
+                //rigBody.velocity = new Vector2(rigBody.velocity.x, yVelocity);
+                if (rigBody.velocity.y < 0)
+                {
+                    rigBody.velocity = new Vector2(rigBody.velocity.x, acceleration / 2);
+                }
                 rigBody.AddForce(new Vector2(0, rigBody.mass * acceleration));
             }
         }

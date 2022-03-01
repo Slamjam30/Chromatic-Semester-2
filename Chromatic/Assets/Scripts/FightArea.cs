@@ -8,11 +8,9 @@ public class FightArea : MonoBehaviour
     public List<GameObject> spawnpoints;
 
     private bool done;
-    private bool finished;
 
     private void Start()
     {
-        finished = false;
         done = false;
     }
 

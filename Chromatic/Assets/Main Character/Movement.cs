@@ -6,13 +6,12 @@ using UnityEngine.Tilemaps;
 public class Movement : MonoBehaviour
 {
     private Rigidbody2D rb;
-    private float moveSpeed = 9.0f;
-    float gravscale;
+    private float moveSpeed = 500.0f;
+    private float climbSpeed = 250.0f;
+    private float xSpeed;
+    private float ySpeed;
+    public bool facingRight = true;
     public float ClimbSpeed;
-    public bool hasRed = false;
-    public bool hasBlue = false;
-    public bool hasYellow = false;
-    public bool hasGreen = false;
     private bool climbing;
     public Sprite vine;
     public Tilemap background;
@@ -27,7 +26,6 @@ public class Movement : MonoBehaviour
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
-        gravscale = rb.gravityScale;
         climbing = false;
         am = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
@@ -37,28 +35,28 @@ public class Movement : MonoBehaviour
     void Update()
     {
         Sprite currentSprite = background.GetSprite(new Vector3Int((int)(transform.position.x), (int)transform.position.y, 0));
-        float xSpeed = Input.GetAxis("Horizontal");
-        float ySpeed = Input.GetAxis("Vertical");
+        xSpeed = Input.GetAxis("Horizontal");
+        ySpeed = Input.GetAxis("Vertical");
         
         
-
+        // TODO: change all keycodes into mappable controls
         // if the A key was pressed this frame
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            sr.flipX = true;
-            am.SetInteger("Current", 0);
-        }
-        else if (Input.GetKeyDown(KeyCode.D))
-        {
-
-            sr.flipX = false;
-            am.SetInteger("Current", 0);
-
-        }
-        else if (xSpeed == 0 && ySpeed == 0)
-        {
-            am.SetInteger("Current", 3);
-        }
+       // if (Input.GetKeyDown(KeyCode.A))
+       // {
+       //     sr.flipX = true;
+       //     am.SetInteger("Current", 0);
+       // }
+       // else if (Input.GetKeyDown(KeyCode.D))
+       // {
+       //
+       //     sr.flipX = false;
+       //     am.SetInteger("Current", 0);
+       //
+       // }
+       // else if (xSpeed == 0 && ySpeed == 0)
+       // {
+       //     am.SetInteger("Current", 3);
+       // }
 
 
         if (Input.GetKeyDown(KeyCode.F)){
@@ -70,17 +68,16 @@ public class Movement : MonoBehaviour
         {
             // Calls FeetCollider.cs and allows double jump.
             this.transform.GetChild(0).GetComponent<FeetCollider>().DoubleJump();
-            am.SetInteger("Current", 1);
+            //am.SetInteger("Current", 1);
         }
   
-        //Climbing
-
-        if (currentSprite != null && currentSprite.Equals(vine) && !climbing)
+        
+        if (currentSprite != null && currentSprite.Equals(vine) && !climbing && Input.GetAxis("Vertical") != 0) // holding up or down in front of a vine sprite
         {
             climbing = true;
             rb.gravityScale = 0;
             rb.velocity = new Vector2(0, 0);
-            am.SetInteger("Current", 2);
+            //am.SetInteger("Current", 2);
         }
         else if (climbing && (currentSprite == null || !currentSprite.Equals(vine)))
         {
@@ -92,31 +89,48 @@ public class Movement : MonoBehaviour
             ySpeed = 0;
         }
         move = new Vector2(xSpeed, ySpeed);
-        transform.Translate(move * Time.deltaTime * moveSpeed);
 
+        //animator state machine updater
+        if (rb.velocity.x != 0)
+        {
+            am.SetBool("isMoving", true);
+        }
+        else
+        {
+            am.SetBool("isMoving", false);
+        }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    // FixedUpdate is called once per physics tic
+    private void FixedUpdate()
     {
-        if (collision.gameObject.tag == "red")
+        if (climbing)
         {
-            hasRed = true;
-            Destroy(collision.gameObject);
+            Vector3 climbVelocity = new Vector2(xSpeed * 0.5f * climbSpeed * Time.fixedDeltaTime, ySpeed * climbSpeed * Time.fixedDeltaTime);
+            rb.velocity = climbVelocity;
+            am.SetBool("isClimbing", true);
         }
-        if (collision.gameObject.tag == "blue")
+        else
         {
-            hasBlue = true;
-            Destroy(collision.gameObject);
+            Vector3 newVelocity = new Vector2(xSpeed * moveSpeed * Time.fixedDeltaTime, rb.velocity.y);
+            rb.velocity = newVelocity;
+            am.SetBool("isClimbing", false);
         }
-        if (collision.gameObject.tag == "green")
+        if (rb.velocity.x > 0 && !facingRight)
         {
-            hasGreen = true;
-            Destroy(collision.gameObject);
+            FlipSprite();
         }
-        if (collision.gameObject.tag == "yellow")
+        if (rb.velocity.x < 0 && facingRight)
         {
-            hasYellow = true;
-            Destroy(collision.gameObject);
+            FlipSprite();
         }
+    }
+
+    private void FlipSprite()
+    {
+        Vector3 flipScale = transform.localScale;
+        flipScale.x *= -1;
+        transform.localScale = flipScale;
+        facingRight = !facingRight;
     }
 }

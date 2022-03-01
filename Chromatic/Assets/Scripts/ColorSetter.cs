@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ColorSetter : MonoBehaviour
 {
+    /* OLD
     private bool color = false;
     // Start is called before the first frame update
     void Start()
@@ -46,5 +47,5 @@ public class ColorSetter : MonoBehaviour
                 GetComponent<Renderer>().material.color = Color.yellow;
             }
         }
-    }
+    } */
 }
