@@ -12,16 +12,17 @@ public class Enemy : MonoBehaviour
 
     Vector3 waypointRight;
     Vector3 waypointLeft;
-    Vector3 moveDistanceRight; 
+    Vector3 moveDistanceRight;
     Vector3 moveDistanceLeft;
 
     private SpriteRenderer sr;
+    private GameObject mainCharacter;
 
-
+    public bool atPlayer = false;
 
     void Start()
     {
-
+        mainCharacter = GameObject.FindWithTag("Player");
         moveDistanceRight = new Vector3(moveXRight, 0, 0);
         moveDistanceLeft = new Vector3(moveXLeft, 0, 0);
         waypointRight = this.transform.position + moveDistanceRight;
@@ -32,7 +33,14 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        UpdateX();
+        if (Mathf.Abs(mainCharacter.transform.position.x - gameObject.transform.position.x) <= 8 && Mathf.Abs(mainCharacter.transform.position.x - gameObject.transform.position.x) >= 0.5f)
+        {
+            MoveTowardsPlayer();
+        }
+        else
+        {
+            UpdateX();
+        }
     }
 
     private void UpdateX()
@@ -61,15 +69,27 @@ public class Enemy : MonoBehaviour
     }
 
     private void MoveRight()
-    {       
-            var step = moveSpeed * Time.deltaTime;
-            transform.position = Vector2.MoveTowards(transform.position, new Vector3(waypointRight.x, transform.position.y, transform.position.z), step);
+    {
+        var step = moveSpeed * Time.deltaTime;
+        transform.position = Vector2.MoveTowards(transform.position, new Vector3(waypointRight.x, transform.position.y, transform.position.z), step);
 
     }
 
     private void MoveLeft()
     {
-            var step = moveSpeed * Time.deltaTime;
-            transform.position = Vector2.MoveTowards(transform.position, new Vector3(waypointLeft.x, transform.position.y, transform.position.z), step);
+        var step = moveSpeed * Time.deltaTime;
+        transform.position = Vector2.MoveTowards(transform.position, new Vector3(waypointLeft.x, transform.position.y, transform.position.z), step);
+    }
+
+    private void MoveTowardsPlayer()
+    {
+        if (transform.position.x < mainCharacter.transform.position.x)
+        { sr.flipX = true; }
+        else if (transform.position.x > mainCharacter.transform.position.x)
+        { sr.flipX = false; }
+
+        var step = moveSpeed * Time.deltaTime;
+        transform.position = Vector2.MoveTowards(transform.position, new Vector3(mainCharacter.transform.position.x, transform.position.y, transform.position.z), step);
+        
     }
 }

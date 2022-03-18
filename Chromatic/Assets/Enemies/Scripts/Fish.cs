@@ -10,6 +10,7 @@ public class Fish : MonoBehaviour
     [Header("case sensitive left or right")]
     [SerializeField] string direction = "left";
 
+    Vector2 STARTPOS;
     Vector3 waypointRight;
     Vector3 waypointLeft;
     Vector3 moveDistanceRight;
@@ -18,9 +19,14 @@ public class Fish : MonoBehaviour
     private SpriteRenderer sr;
     private GameObject mainCharacter;
 
+    public float followRangeX = 10;
+    public float followRangeY = 20;
+    private bool atSpawn = true;
 
     void Start()
     {
+        STARTPOS = transform.position;
+        
         mainCharacter = GameObject.FindWithTag("Player");
         moveDistanceRight = new Vector3(moveXRight, 0, 0);
         moveDistanceLeft = new Vector3(moveXLeft, 0, 0);
@@ -32,14 +38,23 @@ public class Fish : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Mathf.Abs(mainCharacter.transform.position.x - gameObject.transform.position.x) <= 10)
+        Debug.Log(STARTPOS);
+        if (Mathf.Abs(mainCharacter.transform.position.x - gameObject.transform.position.x) <= followRangeX && Mathf.Abs(mainCharacter.transform.position.y - gameObject.transform.position.y) <= followRangeY)
         {
+            atSpawn = false;
             MoveTowardsPlayer();
         }
-        else
+        else if (atSpawn)
         {
             UpdateX();
+        } else 
+        {
+            MoveTowardsSpawn();
         }
+
+        //To stop from moving forever
+        if (Mathf.Abs(transform.position.x - mainCharacter.transform.position.x) > 3.5 || Mathf.Abs(transform.position.y - mainCharacter.transform.position.y) > 3.5)
+        { gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0); }
     }
 
     private void UpdateX()
@@ -89,6 +104,21 @@ public class Fish : MonoBehaviour
 
         var step = moveSpeed * Time.deltaTime;
         transform.position = Vector2.MoveTowards(transform.position, mainCharacter.transform.position, step);
+
+    }
+
+    private void MoveTowardsSpawn()
+    {
+        
+        var step = moveSpeed * Time.deltaTime;
+        transform.position = Vector2.MoveTowards(transform.position, STARTPOS, step);
+        if (Mathf.Abs(transform.position.x - STARTPOS.x) <= 1 && Mathf.Abs(transform.position.y - STARTPOS.y) <= 1)
+        { atSpawn = true; }
+
+        if (transform.position.x < STARTPOS.x)
+        { sr.flipX = true; }
+        else if (transform.position.x > STARTPOS.x)
+        { sr.flipX = false; }
 
     }
 }

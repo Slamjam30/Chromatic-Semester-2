@@ -9,6 +9,8 @@ public class Health : MonoBehaviour
     [SerializeField] float immunityTimer = 2f;
 
     bool playerHit = false;
+    public bool knockback;
+    public float KNOCKBACK_AMOUNT = 500;
 
     public Vector3 startPos;
 
@@ -55,6 +57,12 @@ public class Health : MonoBehaviour
             {
                 playerHit = true;
                 ProcessHit(damageDealer.GetDamage());
+                /*if (other.gameObject.GetComponent<Health>() != null && other.gameObject.GetComponent<Health>().knockback)
+                {
+
+                    other.gameObject.GetComponent<Rigidbody2D>().AddForce(KnockBack(gameObject, other.gameObject, other.gameObject.GetComponent<Health>().KNOCKBACK_AMOUNT));
+                    //other.gameObject.transform.position = Vector2.MoveTowards(other.transform.position, transform.position, -other.gameObject.GetComponent<Health>().KNOCKBACK_AMOUNT); 
+                }*/
                 StartCoroutine(PlayerImmunity());
                 return;
             }
@@ -111,5 +119,20 @@ public class Health : MonoBehaviour
 
     }
 
+    Vector2 KnockBack(GameObject player, GameObject enemy, float amount)
+    {
+        float dX = player.transform.position.x - enemy.transform.position.x;
+        float dY = player.transform.position.y - enemy.transform.position.y;
+
+        float angle = Mathf.Atan(dY / dX);
+
+        //For 2nd and 3rd Quadrant Angles
+        if ((dX < 0 && dY > 0) || (dX < 0 && dY < 0))
+        { angle = -angle; }
+
+        Vector2 test = new Vector2(amount * Mathf.Cos(angle), amount * Mathf.Sin(angle));
+
+        return test;
+    }
     
 }

@@ -64,7 +64,7 @@ public class Movement : MonoBehaviour
         }
 
 
-        if (Input.GetKeyDown(KeyCode.Space) && !climbing && !swimming)
+        if (Input.GetKeyDown(KeyCode.Space) && !climbing)
         {
             // Calls FeetCollider.cs and allows double jump.
             this.transform.GetChild(0).GetComponent<FeetCollider>().DoubleJump();

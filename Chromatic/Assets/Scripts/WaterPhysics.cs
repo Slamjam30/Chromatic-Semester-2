@@ -24,7 +24,7 @@ public class WaterPhysics : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.attachedRigidbody == true)
+        if (collision.attachedRigidbody == true && collision.GetComponent<Fish>() == null)
         {
             collision.attachedRigidbody.gravityScale = gravScale;
             if (collision.GetComponent<Movement>() != null)
@@ -37,7 +37,7 @@ public class WaterPhysics : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.attachedRigidbody == true)
+        if (collision.attachedRigidbody == true && collision.GetComponent<Fish>() == null)
         {
             collision.attachedRigidbody.gravityScale = startGravScale;
             if (collision.GetComponent<Movement>() != null)
