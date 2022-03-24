@@ -103,6 +103,8 @@ MonoBehaviour:
   moveXLeft: 5
   moveSpeed: 4
   direction: left
+  followRangeX: 10
+  followRangeY: 20
 --- !u!50 &6539877744201960228
 Rigidbody2D:
   serializedVersion: 4
@@ -134,7 +136,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.06399596, y: 0.11794925}
@@ -177,4 +179,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 3
   immunityTimer: 2
+  octoHeadHealth: 0
   startPos: {x: 0, y: 0, z: 0}
+  knockedAmount: 5

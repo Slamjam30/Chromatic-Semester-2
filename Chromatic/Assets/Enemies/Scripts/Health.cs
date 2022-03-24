@@ -8,6 +8,8 @@ public class Health : MonoBehaviour
     [Header("Only Effects Player")]
     [SerializeField] float immunityTimer = 2f;
 
+    public int octoHeadHealth;
+
     bool playerHit = false;
 
     public Vector3 startPos;
@@ -16,13 +18,21 @@ public class Health : MonoBehaviour
     private void Start()
     {
         startPos = gameObject.transform.position;
+
+        octoHeadHealth = 7;
     }
 
     void OnCollisionEnter2D(Collision2D other)
     {
         DamageDealer damageDealer = other.gameObject.GetComponent<DamageDealer>();
 
-        if(!damageDealer || gameObject.tag == other.gameObject.tag)
+        // Deal damage to Octopus Head when the Bubble hits it
+        if (this.tag == "Octo Boss Head" && other.gameObject.tag == "Bubble")
+        {
+            octoHeadHealth -= 1;
+        }
+
+        if (!damageDealer || gameObject.tag == other.gameObject.tag)
         {
             return;
         }
@@ -47,7 +57,13 @@ public class Health : MonoBehaviour
     {
         DamageDealer damageDealer = other.gameObject.GetComponent<DamageDealer>();
 
-        if(!damageDealer || gameObject.tag == other.gameObject.tag)
+        // Deal damage to Octopus Head when the Bubble hits it
+        if (this.tag == "Octo Boss Head" && other.tag == "Bubble")
+        {
+            octoHeadHealth -= 1;
+        }
+
+        if (!damageDealer || gameObject.tag == other.gameObject.tag)
         {
             return;
         }
