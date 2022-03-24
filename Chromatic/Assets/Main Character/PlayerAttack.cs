@@ -19,6 +19,9 @@ public class PlayerAttack : MonoBehaviour
         lastInput = 1;
     }
 
+
+    //PROBLEM- IT IS PROPERLY CHANGING ATTACKPOS OBJECT VALUE FOR X, BUT IT IS NOT REGISTERING For example, the object value will read -3.5 but will not actually move to that position.
+
     // Update is called once per frame
     void Update()
     {
@@ -37,7 +40,7 @@ public class PlayerAttack : MonoBehaviour
                     Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackpos.position, attackRange, whatisEnemies);
                     for (int i = 0; i < enemiesToDamage.Length; i++)
                     {
-                        enemiesToDamage[i].gameObject.GetComponent<Health>().ProcessHit(damage);
+                        enemiesToDamage[i].gameObject.GetComponent<Health>().ProcessHit(damage, gameObject);
 
                     }
 
@@ -52,7 +55,7 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(attackpos.position, attackRange);

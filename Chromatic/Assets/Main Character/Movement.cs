@@ -5,6 +5,8 @@ using UnityEngine.Tilemaps;
 
 public class Movement : MonoBehaviour
 {
+    public bool colorIn = false;
+
     private Rigidbody2D rb;
     private float moveSpeed = 500.0f;
     private float climbSpeed = 250.0f;
@@ -21,6 +23,7 @@ public class Movement : MonoBehaviour
     private SpriteRenderer sr;
     public int KillsForUnfreeze;
     public bool swimming = false;
+    public float pushedAcc = 5;
 
     // Start is called before the first frame update
     void Start()

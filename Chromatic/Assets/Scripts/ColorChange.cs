@@ -7,6 +7,7 @@ namespace UnityEngine.Rendering
     public class ColorChange : MonoBehaviour
     {
         //UNCHECK the Color Adjustments override used by the volume.
+        private GameObject MainChar;
         public Volume selvolume;
         public bool coloring;
         private ColorAdjustments colAdj;
@@ -14,6 +15,8 @@ namespace UnityEngine.Rendering
         // Start is called before the first frame update
         void Start()
         {
+            MainChar = GameObject.FindWithTag("Player");
+
             colAdj = ScriptableObject.CreateInstance<ColorAdjustments>();
             colAdj.saturation.overrideState = true;
             colAdj.saturation.value = -100;
@@ -30,6 +33,11 @@ namespace UnityEngine.Rendering
                 
                 colAdj.saturation.value += SPEED;
 
+            }
+
+            if (MainChar.GetComponent<Movement>().colorIn)
+            {
+                coloring = true;
             }
 
 

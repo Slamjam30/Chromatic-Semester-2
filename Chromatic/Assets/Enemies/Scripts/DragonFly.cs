@@ -33,6 +33,8 @@ public class DragonFly : MonoBehaviour
 
     void Start()
     {
+        startPosition = gameObject.transform.position;
+
         mainCharacter = GameObject.FindWithTag("Player");
         rb = gameObject.GetComponent<Rigidbody2D>();
         sr = gameObject.GetComponent<SpriteRenderer>();
@@ -68,7 +70,7 @@ public class DragonFly : MonoBehaviour
                     //positionsGrabbed starts as false
                     if (!positionsGrabbed)
                     {
-                        startPosition = gameObject.transform.position;
+                        startPosition = new Vector2(gameObject.transform.position.x, startPosition.y);
                         playerPosition = mainCharacter.transform.position;
                         positionsGrabbed = true;
                     }
@@ -78,6 +80,18 @@ public class DragonFly : MonoBehaviour
                     {
                         //Moves towards the player using variable step (relying on moveSpeed)
                         transform.position = Vector2.MoveTowards(transform.position, playerPosition, step);
+
+                        //Change sprite direction
+                        if (transform.position.x >= playerPosition.x)
+                        {
+                            direction = "left";
+                            sr.flipX = false;
+                        } 
+                        else if (transform.position.x <= playerPosition.x)
+                        {
+                            direction = "right";
+                            sr.flipX = true;
+                        }
 
                         if (transform.position == playerPosition)
                         {

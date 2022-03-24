@@ -8,6 +8,10 @@ TagManager:
   - Flying Enemy
   - Enemy
   - Frog Boss
+  - turnToGreen
+  - turnToRed
+  - turnToBlue
+  - First Boss
   layers:
   - Default
   - TransparentFX

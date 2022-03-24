@@ -7,6 +7,7 @@ public class Launcher : MonoBehaviour
     [SerializeField] GameObject projectile;
     [SerializeField] float projectileSpeed = 10f;
     [SerializeField] float timeBetweenShots = 2f;
+    [SerializeField] float RANGE = 23.5f;
     float shotCounter;
     private GameObject mainCharacter;
 
@@ -18,15 +19,18 @@ public class Launcher : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        shotCounter -= Time.deltaTime;
-        if (shotCounter <= 0f)
+        if (Mathf.Abs(gameObject.transform.position.x - mainCharacter.transform.position.x) <= RANGE)
         {
-            if (!mainCharacter)
+            shotCounter -= Time.deltaTime;
+            if (shotCounter <= 0f)
             {
-                return;
+                if (!mainCharacter)
+                {
+                    return;
+                }
+                Fire();
+                shotCounter = timeBetweenShots;
             }
-            Fire();
-            shotCounter = timeBetweenShots;
         }
     }
 
