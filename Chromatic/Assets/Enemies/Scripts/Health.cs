@@ -170,6 +170,7 @@ public class Health : MonoBehaviour
         if (tag == "First Boss")
         {
             GameObject.Find("First Boss Area").GetComponentInChildren<FreezeCam>().UndoFreeze = true;
+            Globals.color = "green";
             GameObject.FindWithTag("Player").GetComponent<Movement>().colorIn = true;
             Globals.maxHealth = 4;
             GameObject.FindWithTag("Player").GetComponent<Health>().health = 4;
@@ -189,33 +190,44 @@ public class Health : MonoBehaviour
 
     Vector2 KnockBack(GameObject player, GameObject enemy, float amount)
     {
-        float dX = player.transform.position.x - enemy.transform.position.x;
-        float dY = player.transform.position.y - enemy.transform.position.y;
+        if (enemy != null)
+        {
+            float dX = player.transform.position.x - enemy.transform.position.x;
+            float dY = player.transform.position.y - enemy.transform.position.y;
 
-        float angle = Mathf.Atan(dY / dX);
+            float angle = Mathf.Atan(dY / dX);
 
-        //For 2nd and 3rd Quadrant Angles
-        if ((dX < 0 && dY > 0) || (dX < 0 && dY < 0))
-        { angle = -angle; }
+            //For 2nd and 3rd Quadrant Angles
+            if ((dX < 0 && dY > 0) || (dX < 0 && dY < 0))
+            { angle = -angle; }
 
-        Vector2 velocity = new Vector2(amount * Mathf.Cos(angle), amount * Mathf.Sin(angle));
+            Vector2 velocity = new Vector2(amount * Mathf.Cos(angle), amount * Mathf.Sin(angle));
 
-        return velocity;
+            return velocity;
+        }
+        else
+        {
+            return Vector2.zero;
+        }
     }
     
     IEnumerator KnockEnemy(GameObject player, GameObject enemy, float amount)
     {
         Debug.Log("KnockEnemy() Ran!");
         //No Y velocity for Dragonfly, because it makes returning to starting point glitch.
-        if (gameObject.GetComponent<DragonFly>().enabled)
+        if (enemy != null)
         {
-            gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(KnockBack(player, enemy, amount).x, 0);
-        } else
-        {
-            gameObject.GetComponent<Rigidbody2D>().velocity = KnockBack(player, enemy, amount);
+            if (gameObject.GetComponent<DragonFly>() != null)
+            {
+                gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(KnockBack(player, enemy, amount).x, 0);
+            }
+            else
+            {
+                gameObject.GetComponent<Rigidbody2D>().velocity = KnockBack(player, enemy, amount);
+            }
+            yield return new WaitForSeconds(1f);
+            gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
         }
-        yield return new WaitForSeconds(1f);
-        gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, 0);
     }
 
     public int getHealth()

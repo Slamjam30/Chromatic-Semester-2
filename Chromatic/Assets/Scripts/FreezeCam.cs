@@ -27,7 +27,14 @@ public class FreezeCam : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Unfreezes camera if UndoFreeze is true
+        if (UndoFreeze)
+        {
 
+            UnFreeze();
+            done = true;
+
+        }
 
 
     }
@@ -37,20 +44,12 @@ public class FreezeCam : MonoBehaviour
         if (done == false)
         {
             //Freezes camera if UndoFreeze is false
-            if (collision.gameObject.tag == "Player" && UndoFreeze == false)
+            if (collision.gameObject.tag == "Player" && !UndoFreeze)
             {
                 Freeze();
                 done = true;
             }
 
-            //Unfreezes camera if UndoFreeze is true
-            if (collision.gameObject.tag == "Player" && UndoFreeze == true)
-            {
-
-                UnFreeze();
-                done = true;
-
-            }
         }
     }
 
@@ -58,7 +57,7 @@ public class FreezeCam : MonoBehaviour
     {
         if (block != null)
         {
-            block.transform.position = blockpos;
+            block.transform.localPosition = blockpos;
         }
 
         //Changes the variables in the CameraFollow script to freeze the camera, and inserts this script's freezePos.

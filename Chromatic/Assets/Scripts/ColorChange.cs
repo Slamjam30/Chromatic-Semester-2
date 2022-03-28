@@ -11,7 +11,8 @@ namespace UnityEngine.Rendering
         public Volume selvolume;
         public bool coloring;
         private ColorAdjustments colAdj;
-        private readonly float SPEED = .03f;
+        private readonly float SPEED = .04f;
+
         // Start is called before the first frame update
         void Start()
         {

@@ -95,7 +95,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1534941734827545512}
-  m_BodyType: 1
+  m_BodyType: 0
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -107,7 +107,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &345467560804449068
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -150,6 +150,7 @@ MonoBehaviour:
   moveXLeft: 3
   moveSpeed: 2
   direction: left
+  atPlayer: 0
 --- !u!114 &-8483354754919946515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -164,7 +165,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 3
   immunityTimer: 2
-  startpos: {x: 0, y: 0, z: 0}
+  octoHeadHealth: 0
+  startPos: {x: 0, y: 0, z: 0}
+  knockedAmount: 5
 --- !u!114 &-3511284213677679184
 MonoBehaviour:
   m_ObjectHideFlags: 0
