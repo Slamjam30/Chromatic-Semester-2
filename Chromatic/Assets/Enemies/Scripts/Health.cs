@@ -190,7 +190,7 @@ public class Health : MonoBehaviour
 
     Vector2 KnockBack(GameObject player, GameObject enemy, float amount)
     {
-        if (enemy != null)
+        if (enemy != null && player != null)
         {
             float dX = player.transform.position.x - enemy.transform.position.x;
             float dY = player.transform.position.y - enemy.transform.position.y;

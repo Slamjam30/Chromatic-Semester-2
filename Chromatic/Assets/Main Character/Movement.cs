@@ -24,10 +24,13 @@ public class Movement : MonoBehaviour
     public int KillsForUnfreeze;
     public bool swimming = false;
     public float pushedAcc = 5;
+    public Dash dashScimpt;
+    public bool isDashing;
 
     // Start is called before the first frame update
     void Start()
     {
+        isDashing = false;
         rb = gameObject.GetComponent<Rigidbody2D>();
         climbing = false;
         am = GetComponent<Animator>();
@@ -37,6 +40,7 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        isDashing = dashScimpt.isDashing;
         Sprite currentSprite = background.GetSprite(new Vector3Int((int)(transform.position.x), (int)transform.position.y, 0));
         xSpeed = Input.GetAxis("Horizontal");
         ySpeed = Input.GetAxis("Vertical");
@@ -107,17 +111,20 @@ public class Movement : MonoBehaviour
     // FixedUpdate is called once per physics tic
     private void FixedUpdate()
     {
-        if (climbing)
+        if (!isDashing)
         {
-            Vector3 climbVelocity = new Vector2(xSpeed * 0.5f * climbSpeed * Time.fixedDeltaTime, ySpeed * climbSpeed * Time.fixedDeltaTime);
-            rb.velocity = climbVelocity;
-            am.SetBool("isClimbing", true);
-        }
-        else
-        {
-            Vector3 newVelocity = new Vector2(xSpeed * moveSpeed * Time.fixedDeltaTime, rb.velocity.y);
-            rb.velocity = newVelocity;
-            am.SetBool("isClimbing", false);
+            if (climbing)
+            {
+                Vector3 climbVelocity = new Vector2(xSpeed * 0.5f * climbSpeed * Time.fixedDeltaTime, ySpeed * climbSpeed * Time.fixedDeltaTime);
+                rb.velocity = climbVelocity;
+                am.SetBool("isClimbing", true);
+            }
+            else
+            {
+                Vector3 newVelocity = new Vector2(xSpeed * moveSpeed * Time.fixedDeltaTime, rb.velocity.y);
+                rb.velocity = newVelocity;
+                am.SetBool("isClimbing", false);
+            }
         }
         if (rb.velocity.x > 0 && !facingRight)
         {

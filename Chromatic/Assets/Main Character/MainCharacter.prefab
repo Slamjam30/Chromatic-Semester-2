@@ -325,6 +325,7 @@ GameObject:
   - component: {fileID: 8730608948275178695}
   - component: {fileID: 8730608948275178700}
   - component: {fileID: 3926781849114467956}
+  - component: {fileID: 74647035078406756}
   - component: {fileID: 5739783139390850854}
   m_Layer: 0
   m_Name: MainCharacter
@@ -501,6 +502,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffa64ba9091e068479ed116c264d950a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  colorIn: 0
   facingRight: 1
   ClimbSpeed: 0
   vine: {fileID: 21300000, guid: 63b3e55bd6d072c4e9286f848f53c93c, type: 3}
@@ -508,6 +510,8 @@ MonoBehaviour:
   KillsForUnfreeze: 0
   swimming: 0
   pushedAcc: 5
+  dashScimpt: {fileID: 74647035078406756}
+  isDashing: 0
 --- !u!114 &5720017418074213087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -541,6 +545,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 3
   immunityTimer: 2
+  octoHeadHealth: 0
   startPos: {x: 0, y: 0, z: 0}
   knockedAmount: 5
 --- !u!114 &8730608948275178695
@@ -594,6 +599,22 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 4.2, y: 10}
   m_Direction: 0
+--- !u!114 &74647035078406756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8730608948275178692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 23595424dc36ae345aed5e9c2a246d6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rb: {fileID: 8730608948275178712}
+  dashTime: 0.5
+  dashDistance: 15
+  isDashing: 0
 --- !u!114 &5739783139390850854
 MonoBehaviour:
   m_ObjectHideFlags: 0

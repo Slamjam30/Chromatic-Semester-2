@@ -69,7 +69,7 @@ public class PlayerAttack : MonoBehaviour
         // if movement is positive, set the hitbox to the right of the character
         if (horizontalInput > 0)
         {
-            attackpos.localPosition = new Vector3(Mathf.Abs(-attackpos.localPosition.x), 0);
+            attackpos.localScale = new Vector3(Mathf.Abs(-attackpos.localScale.x), 0);
             lastInput = 1;
 
         }
@@ -77,7 +77,7 @@ public class PlayerAttack : MonoBehaviour
         // if movement is negative, set it to the left of the character
         else if (horizontalInput < 0)
         {
-            attackpos.localPosition = new Vector3(- Mathf.Abs(attackpos.localPosition.x), 0);
+            attackpos.localScale = new Vector3(- Mathf.Abs(attackpos.localScale.x), 0);
             lastInput = 2;
 
         }
@@ -86,11 +86,11 @@ public class PlayerAttack : MonoBehaviour
         {
             if (lastInput == 1)
             {
-                attackpos.localPosition = new Vector3(Mathf.Abs(attackpos.localPosition.x), 0);
+                attackpos.localScale = new Vector3(Mathf.Abs(attackpos.localScale.x), 0);
             }
             else if (lastInput == 2)
             {
-                attackpos.localPosition = new Vector3(- Mathf.Abs(attackpos.localPosition.x), 0);
+                attackpos.localScale = new Vector3(- Mathf.Abs(attackpos.localScale.x), 0);
             }
 
         }

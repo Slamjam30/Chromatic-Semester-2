@@ -1,4 +1,4 @@
-using System.Collections;
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -6,13 +6,10 @@ using UnityEngine.Tilemaps;
 public class MovementOLD : MonoBehaviour
 {
     private Rigidbody2D rb;
-    private float moveSpeed = 9.0f;
-    float gravscale;
-    public float ClimbSpeed;
-    public bool hasRed = false;
-    public bool hasBlue = false;
-    public bool hasYellow = false;
-    public bool hasGreen = false;
+    private float moveSpeed = 500.0f;
+    private float climbSpeed = 250.0f;
+    private float xSpeed;
+    private float ySpeed;
     private bool climbing;
     public Sprite vine;
     public Tilemap background;
@@ -22,12 +19,14 @@ public class MovementOLD : MonoBehaviour
     private SpriteRenderer sr;
     public int KillsForUnfreeze;
     public bool swimming = false;
+    public Dash dashScimpt;
+    public bool isDashing;
 
     // Start is called before the first frame update
     void Start()
     {
+        isDashing = false;
         rb = gameObject.GetComponent<Rigidbody2D>();
-        gravscale = rb.gravityScale;
         climbing = false;
         am = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
@@ -36,11 +35,12 @@ public class MovementOLD : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        isDashing = dashScimpt.isDashing;
         Sprite currentSprite = background.GetSprite(new Vector3Int((int)(transform.position.x), (int)transform.position.y, 0));
-        float xSpeed = Input.GetAxis("Horizontal");
-        float ySpeed = Input.GetAxis("Vertical");
-        
-        
+        xSpeed = Input.GetAxis("Horizontal");
+        ySpeed = Input.GetAxis("Vertical");
+
+
 
         // if the A key was pressed this frame
         if (Input.GetKeyDown(KeyCode.A))
@@ -120,3 +120,4 @@ public class MovementOLD : MonoBehaviour
         }
     }
 }
+*/
