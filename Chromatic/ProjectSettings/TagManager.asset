@@ -12,6 +12,7 @@ TagManager:
   - turnToRed
   - turnToBlue
   - First Boss
+  - BLUE
   layers:
   - Default
   - TransparentFX
@@ -48,4 +49,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Grayscale
+    uniqueID: 4154876115
     locked: 0

@@ -181,6 +181,7 @@ public class Health : MonoBehaviour
         {
             //Play an animation or something
             GameObject.Find("RisingWater").GetComponent<Water_Rise>().rise = true;
+            Globals.color = "BLUE";
 
             Destroy(gameObject);
             

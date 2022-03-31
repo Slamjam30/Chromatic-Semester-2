@@ -7,10 +7,9 @@ public class Water_Rise : MonoBehaviour
 
     public bool rise;
     private GameObject water;
-    public Vector3 waterPos;
+    public Vector2 waterPos;
     public float speed = 1;
 
-    private Vector3 distance;
     private bool scenePlayed;
 
     // Start is called before the first frame update
@@ -19,8 +18,6 @@ public class Water_Rise : MonoBehaviour
         water = gameObject;
         scenePlayed = false;
 
-        speed = speed * 0.01f;
-        distance = new Vector3(waterPos.x - water.transform.position.x, waterPos.y - water.transform.position.y, waterPos.z);
         //Automatically moves to the z position so it moves from invisible to visible range
     }
 
@@ -29,11 +26,10 @@ public class Water_Rise : MonoBehaviour
     {
         if (rise == true && waterPos.y >= water.transform.position.y)
         {
-            //moves towards the goal position. Automatically moves to the z position so it moves from invisible to visible range
-            water.transform.position = new Vector3(water.transform.position.x, water.transform.position.y, waterPos.z);
+            //moves towards the goal position
+            var step = speed * Time.deltaTime;
+            water.transform.position = Vector2.MoveTowards(new Vector2(water.transform.position.x, water.transform.position.y), waterPos, step);
 
-            water.transform.position += new Vector3(distance.x * speed, distance.y * speed, 0);
-            //print(new Vector3(distance.x * speed, distance.y * speed, distance.z));
         }
 
         if (rise == true && scenePlayed == false)
