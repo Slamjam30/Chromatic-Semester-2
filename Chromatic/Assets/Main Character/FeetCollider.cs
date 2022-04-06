@@ -69,4 +69,11 @@ public class FeetCollider : MonoBehaviour
         }
 
     }
+
+    public void GrappleResetJump()
+    {
+        jumpCounter = 2;
+        am.SetBool("isJumping", false);
+        am.SetBool("isDoubleJump", false);
+    }
 }

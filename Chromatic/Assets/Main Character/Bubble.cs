@@ -37,10 +37,19 @@ public class Bubble : MonoBehaviour
                     rigBody.velocity = new Vector2(rigBody.velocity.x, acceleration / 2);
                 }
                 rigBody.AddForce(new Vector2(0, rigBody.mass * acceleration));
+            } else {
+                gameObject.GetComponent<Movement>().canMoveBubble = false;
+                //If canMove is still true, set velocity to zero
+                //TO KEEP Y VELOCITY JUST DO new Vector2(0f, gameObject.GetComponent<Rigidbody2D>().velocity.y);
+                if (gameObject.GetComponent<Movement>().canMove)
+                {
+                    gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0f, gameObject.GetComponent<Rigidbody2D>().velocity.y);
+                }
             }
         }
         else
         {
+            gameObject.GetComponent<Movement>().canMoveBubble = true;
             bubb.SetActive(false);
         }
     }
@@ -50,6 +59,11 @@ public class Bubble : MonoBehaviour
         cooled = false;
         yield return new WaitForSeconds(cooldown);
         cooled = true;
+    }
+
+    public bool getActive()
+    {
+        return triggered;
     }
 
 }

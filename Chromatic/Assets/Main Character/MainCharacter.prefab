@@ -325,6 +325,7 @@ GameObject:
   - component: {fileID: 8730608948275178695}
   - component: {fileID: 8730608948275178700}
   - component: {fileID: 3926781849114467956}
+  - component: {fileID: 5136245359875288659}
   - component: {fileID: 74647035078406756}
   - component: {fileID: 5739783139390850854}
   m_Layer: 0
@@ -512,6 +513,7 @@ MonoBehaviour:
   pushedAcc: 5
   dashScimpt: {fileID: 74647035078406756}
   isDashing: 0
+  canMove: 1
 --- !u!114 &5720017418074213087
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -599,6 +601,21 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 4.2, y: 10}
   m_Direction: 0
+--- !u!114 &5136245359875288659
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8730608948275178692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bab5813c8e18d6746b3347c6e89b7750, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grappleSpeed: 2
+  grappling: 0
+  maxGrappleDistance: 10
 --- !u!114 &74647035078406756
 MonoBehaviour:
   m_ObjectHideFlags: 0
