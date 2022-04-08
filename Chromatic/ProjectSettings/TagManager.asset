@@ -14,6 +14,7 @@ TagManager:
   - First Boss
   - BLUE
   - GrapplePoint
+  - GrappleSwing
   layers:
   - Default
   - TransparentFX

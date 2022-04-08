@@ -46,7 +46,10 @@ public class SimplifiedRopeSwing : MonoBehaviour
         UpdateSpring();
 
         //Add the weight to what the rope is carrying
-        objectThatIsHangingFromTheRope.GetComponent<Rigidbody2D>().mass = loadMass;
+        if (objectThatIsHangingFromTheRope.tag != "Player")
+        {
+            objectThatIsHangingFromTheRope.GetComponent<Rigidbody2D>().mass = loadMass;
+        }
 
 
     }

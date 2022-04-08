@@ -42,6 +42,8 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Debug.Log("canMove: " + canMove + " canMoveBubble: " + canMoveBubble);
+
         //Uses both just in case use bubble while can't move
         if (canMove && canMoveBubble)
         {
