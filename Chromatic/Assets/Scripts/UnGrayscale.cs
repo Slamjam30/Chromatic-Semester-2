@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class UnGrayscale : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class UnGrayscale : MonoBehaviour
     private float SPEED;
     private GameObject[] colorObjects;
     private bool colorRan = false;
-    //public GameObject blueObject;
+    //public GameObject blueObject
 
     public string color;
 
@@ -29,7 +30,7 @@ public class UnGrayscale : MonoBehaviour
             colorRan = false;
             foreach (GameObject colorObject in colorObjects)
             {
-                if (colorObject.GetComponent<SpriteRenderer>().color.a > 0)
+                if (colorObject.GetComponent<SpriteRenderer>() != null && colorObject.GetComponent<SpriteRenderer>().color.a > 0)
                 {
                     colorRan = true;
                     temp = colorObject.GetComponent<SpriteRenderer>().color;
@@ -37,6 +38,17 @@ public class UnGrayscale : MonoBehaviour
                     temp.a -= SPEED * Time.deltaTime;
                     colorObject.GetComponent<SpriteRenderer>().color = temp;
                 }
+
+                if (colorObject.GetComponent<Tilemap>() != null && colorObject.GetComponent<Tilemap>().color.a > 0)
+                {
+                    colorRan = true;
+                    temp = colorObject.GetComponent<Tilemap>().color;
+                    //Alpha is from 0 to 1. If speed is 0.04f, that means 4%/second.
+                    temp.a -= SPEED * Time.deltaTime;
+                    colorObject.GetComponent<Tilemap>().color = temp;
+                }
+
+
             }
 
         }

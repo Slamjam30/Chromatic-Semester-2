@@ -23,7 +23,10 @@ public class Tentacle_Script_Main : MonoBehaviour
     float startXPos;
     float startYPos;
 
-    string swipeTentacleSide = "left";
+    //string swipeTentacleSide = "left";
+
+    //For Health script to call for cooling down
+    public bool octoCool;
 
     // Start is called before the first frame update
     void Start()
@@ -461,7 +464,20 @@ public class Tentacle_Script_Main : MonoBehaviour
             {
                 pos.y += 5.0f * Time.deltaTime;
             }
+            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraFollow>().following = true;
+            Globals.inFight = false;
+            Globals.color = "YELLOW";
+            GameObject.FindGameObjectWithTag("Player").GetComponent<Health>().raiseToMaxHealth();
         }
+    }
+
+    public IEnumerator OctoHealthCooldown()
+    {
+        octoCool = true;
+        gameObject.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0);
+        yield return new WaitForSeconds(0.5f);
+        gameObject.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255);
+        octoCool = false;
     }
     
     

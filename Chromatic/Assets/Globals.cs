@@ -11,4 +11,7 @@ public static class Globals
     //Alpha is from 0 to 1. If speed is 0.04f, that means 4%/second b/c UnGrayscale uses Time.deltaTime.
     public static float grayscaleSpeed = 0.1f;
 
+    //If in a boss fight that is its own scene, can reset to the beginning of that scene if the player dies
+    public static bool inFight;
+
 }

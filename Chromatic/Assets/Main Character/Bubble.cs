@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Bubble : MonoBehaviour
 {
+    //reload
     //bubb is the bubble sprite- a child object of the main character
     public GameObject bubb;
     private Rigidbody2D rigBody;
@@ -37,7 +38,9 @@ public class Bubble : MonoBehaviour
                     rigBody.velocity = new Vector2(rigBody.velocity.x, acceleration / 2);
                 }
                 rigBody.AddForce(new Vector2(0, rigBody.mass * acceleration));
-            } else {
+            }
+            else
+            {
                 gameObject.GetComponent<Movement>().canMoveBubble = false;
                 //If canMove is still true, set velocity to zero
                 //TO KEEP Y VELOCITY JUST DO new Vector2(0f, gameObject.GetComponent<Rigidbody2D>().velocity.y);
@@ -53,6 +56,7 @@ public class Bubble : MonoBehaviour
             bubb.SetActive(false);
         }
     }
+
 
     public IEnumerator Cooldown()
     {

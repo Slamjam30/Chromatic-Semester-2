@@ -27,9 +27,11 @@ public class Health : MonoBehaviour
         DamageDealer damageDealer = other.gameObject.GetComponent<DamageDealer>();
 
         // Deal damage to Octopus Head when the Bubble hits it
-        if (this.tag == "Octo Boss Head" && other.gameObject.tag == "Bubble")
+        //Test for 1) this is Octo Boss Head / 2) Other object is Player / 3) Player is bubbling / 4) Octo health is not on cooldown
+        if (this.tag == "Octo Boss Head" && other.gameObject.tag == "Player" && other.gameObject.GetComponent<Bubble>().triggered && !this.GetComponent<Tentacle_Script_Main>().octoCool)
         {
             octoHeadHealth -= 1;
+            StartCoroutine(this.GetComponent<Tentacle_Script_Main>().OctoHealthCooldown());
         }
 
         if (!damageDealer || gameObject.tag == other.gameObject.tag)
@@ -39,18 +41,42 @@ public class Health : MonoBehaviour
 
         if (gameObject.tag == "Player" && !playerHit)
         {
-            playerHit = true;
-
             Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
+            //The push distance times 1 or -1 depending on direction
             float push = gameObject.GetComponent<Movement>().pushedAcc * 1000f * gameObject.transform.position.x.CompareTo(other.transform.position.x);
-            rb.AddForce(new Vector2(rb.mass * push, 0));
-            rb.AddForce(new Vector2(0, 8), ForceMode2D.Impulse);
+            //Debug.Log(gameObject.transform.position.x.CompareTo(other.transform.position.x));
 
-            ProcessHit(damageDealer.GetDamage());
-            StartCoroutine(PlayerHitIndicator());
-            StartCoroutine(PlayerImmunity());
+            //If using the bubble, the bubble will pop and player will not be hurt
+            if (gameObject.GetComponent<Bubble>().triggered)
+            {
+                Debug.Log("Bubble Hit!");
+                gameObject.GetComponent<Bubble>().triggered = false;
+                StartCoroutine(gameObject.GetComponent<Bubble>().Cooldown());
+                //knocks the player back then gives immunity (Must use AddForce because moving in x-direction sets velocity)
+                rb.AddForce(new Vector2(rb.mass * push, 0));
+                rb.AddForce(new Vector2(0, 8), ForceMode2D.Impulse);
+                StartCoroutine(PlayerImmunity());
+                return;
+            }
+            else
+            {
+                playerHit = true;
+                ProcessHit(damageDealer.GetDamage());
+                /*if (other.gameObject.GetComponent<Health>() != null && other.gameObject.GetComponent<Health>().knockback)
+                {
+
+                    other.gameObject.GetComponent<Rigidbody2D>().AddForce(KnockBack(gameObject, other.gameObject, other.gameObject.GetComponent<Health>().KNOCKBACK_AMOUNT));
+                    //other.gameObject.transform.position = Vector2.MoveTowards(other.transform.position, transform.position, -other.gameObject.GetComponent<Health>().KNOCKBACK_AMOUNT); 
+                }*/
+                //knocks the player back then gives immunity (Must use AddForce because moving in x-direction sets velocity)
+                rb.AddForce(new Vector2(rb.mass * push, 0));
+                rb.AddForce(new Vector2(0, 8), ForceMode2D.Impulse);
+                StartCoroutine(PlayerHitIndicator());
+                StartCoroutine(PlayerImmunity());
+                return;
+            }
         }
-        
+
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -144,14 +170,23 @@ public class Health : MonoBehaviour
 
         else if (health <= 0 && tag == "Player")
         {
-            gameObject.transform.position = startPos;
-            health = Globals.maxHealth;
+            if (Globals.inFight)
+            {
+                string currentScene = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+                UnityEngine.SceneManagement.SceneManager.LoadScene(currentScene);
+            }
+            else
+            {
+                gameObject.transform.position = startPos;
+                health = Globals.maxHealth;
+            }
         }
 
     }
 
     IEnumerator PlayerImmunity()
     {
+        playerHit = true;
         yield return new WaitForSeconds(immunityTimer);
         playerHit = false;
     }
@@ -170,7 +205,7 @@ public class Health : MonoBehaviour
         if (tag == "First Boss")
         {
             GameObject.Find("First Boss Area").GetComponentInChildren<FreezeCam>().UndoFreeze = true;
-            Globals.color = "green";
+            Globals.color = "GREEN";
             GameObject.FindWithTag("Player").GetComponent<Movement>().colorIn = true;
             Globals.maxHealth = 4;
             GameObject.FindWithTag("Player").GetComponent<Health>().health = 4;
@@ -182,6 +217,7 @@ public class Health : MonoBehaviour
             //Play an animation or something
             GameObject.Find("RisingWater").GetComponent<Water_Rise>().rise = true;
             Globals.color = "BLUE";
+            GameObject.Find("ReturnToMain").SetActive(true);
 
             Destroy(gameObject);
             
@@ -234,6 +270,11 @@ public class Health : MonoBehaviour
     public int getHealth()
     {
         return health;
+    }
+
+    public void raiseToMaxHealth()
+    {
+        health = Globals.maxHealth;
     }
 
 }
