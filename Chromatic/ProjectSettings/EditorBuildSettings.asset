@@ -12,6 +12,15 @@ EditorBuildSettings:
     path: Assets/Scenes/Main.unity
     guid: cdaaca61532e8b14f8581d7bcf8b1649
   - enabled: 1
-    path: Assets/Scenes/GREEN.unity
+    path: Assets/Scenes/GREENOLD.unity
     guid: 5d6345b0aeb191d43a097dee11ae027c
+  - enabled: 1
+    path: Assets/Scenes/BLUEOLD.unity
+    guid: b09d5af87f73f5c468130cdba9e66605
+  - enabled: 1
+    path: Assets/Scenes/BLUEBOSS.unity
+    guid: 7090a4d93afad984d91f60035bf11778
+  - enabled: 1
+    path: Assets/Scenes/YELLOW.unity
+    guid: 3f4feeeb676e1ce42af035fc27b9b970
   m_configObjects: {}

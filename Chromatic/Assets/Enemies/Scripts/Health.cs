@@ -101,7 +101,7 @@ public class Health : MonoBehaviour
             StartCoroutine(PlayerHitIndicator());
         }
 
-        if(gameObject.tag == "Player" && !playerHit)
+        if (gameObject.tag == "Player" && !playerHit)
         {
             Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
             //The push distance times 1 or -1 depending on direction
@@ -139,7 +139,7 @@ public class Health : MonoBehaviour
             }
         }
 
-        if(gameObject.tag == "Player" && playerHit)
+        if (gameObject.tag == "Player" && playerHit)
         {
             return;
         }
@@ -149,7 +149,7 @@ public class Health : MonoBehaviour
     {
         health -= damage;
 
-        if (gameObject.tag == "Enemy" || gameObject.tag == "Flying Enemy")
+        if (gameObject.tag == "Enemy" || gameObject.tag == "Flying Enemy" || gameObject.tag == "Armadillo Boss" || gameObject.tag == "Frog Boss")
         {
             StartCoroutine(KnockEnemy(player, gameObject, knockedAmount));
             StartCoroutine(PlayerHitIndicator());
@@ -217,10 +217,24 @@ public class Health : MonoBehaviour
             //Play an animation or something
             GameObject.Find("RisingWater").GetComponent<Water_Rise>().rise = true;
             Globals.color = "BLUE";
-            GameObject.Find("ReturnToMain").SetActive(true);
+            Globals.maxHealth = 5;
+            GameObject.FindGameObjectWithTag("Player").GetComponent<Health>().raiseToMaxHealth();
+            gameObject.GetComponent<FrogBoss>().returnToMainSceneTriggerObj.SetActive(true);
 
             Destroy(gameObject);
             
+        }
+
+        //BLUE Boss is done in Octo script
+
+        if (tag == "Armadillo Boss")
+        {
+            Globals.color = "RED";
+            Globals.maxHealth = 7;
+            GameObject.FindGameObjectWithTag("Player").GetComponent<Health>().raiseToMaxHealth();
+            Globals.inFight = false;
+
+            Destroy(gameObject);
         }
 
     }

@@ -8,36 +8,62 @@ public class Dash : MonoBehaviour
     [SerializeField] float dashTime;
     public float dashDistance = 15f;
     public bool isDashing;
-    
-    // Start is called before the first frame update
-    void Start()
-    {
+    public float cooldownTime = 5f;
+    private bool cooled;
+    private bool startedCool;
 
+// Start is called before the first frame update
+void Start()
+    {
+        cooled = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKey(KeyCode.A) && Input.GetKeyDown(KeyCode.LeftShift) && isDashing == false)
+        if (cooled)
         {
-            StartCoroutine(DoDash(-1f));
+            if (Input.GetKey(KeyCode.A) && Input.GetKeyDown(KeyCode.LeftShift) && !isDashing)
+            {
+                StartCoroutine(DoDash(-1f));
+            }
+            if (Input.GetKey(KeyCode.D) && Input.GetKeyDown(KeyCode.LeftShift) && !isDashing)
+            {
+                StartCoroutine(DoDash(1f));
+            }
         }
-        if (Input.GetKey(KeyCode.D) && Input.GetKeyDown(KeyCode.LeftShift) && isDashing == false)
+        else if (!startedCool)
         {
-            StartCoroutine(DoDash(1f));
+            StartCoroutine(DashCooldown());
         }
+
     }
 
     IEnumerator DoDash(float direction)
     {
         isDashing = true;
         rb.velocity = new Vector2(rb.velocity.x, 0f);
-        rb.AddForce(new Vector2(dashDistance * direction, 0f), ForceMode2D.Impulse);
+        rb.AddForce(new Vector2(direction * dashDistance, 0f), ForceMode2D.Impulse);
         float gravity = rb.gravityScale;
         rb.gravityScale = 0;
         yield return new WaitForSeconds(dashTime);
         isDashing = false;
         rb.gravityScale = gravity;
-        Debug.Log("yo im totally dashing frfr.");
+        cooled = false;
+        //Debug.Log("yo im totally dashing frfr.");
     }
+
+    IEnumerator DashCooldown()
+    {
+        startedCool = true;
+        yield return new WaitForSeconds(cooldownTime);
+        cooled = true;
+        startedCool = false;
+    }
+
+    public bool GetIfCooled()
+    {
+        return cooled;
+    }
+
 }

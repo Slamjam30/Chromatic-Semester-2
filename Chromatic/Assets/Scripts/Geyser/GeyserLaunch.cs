@@ -12,7 +12,7 @@ public class GeyserLaunch : MonoBehaviour
         inGeyser = false;
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
         if (inGeyser)
         {

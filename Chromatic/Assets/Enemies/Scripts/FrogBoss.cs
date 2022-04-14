@@ -25,6 +25,10 @@ public class FrogBoss : MonoBehaviour
     public Sprite MOUTH_SPRITE;
     private Sprite ORIG_SPRITE;
 
+    //This is called when the frog dies in the health script.
+    public GameObject returnToMainSceneTriggerObj;
+
+
     [SerializeField] GameObject TONGUE_COLLIDER_LEFT;
     [SerializeField] GameObject TONGUE_COLLIDER_RIGHT;
     [SerializeField] float jumpcooldown;

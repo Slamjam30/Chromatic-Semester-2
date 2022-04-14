@@ -35,7 +35,7 @@ public class Grapple : MonoBehaviour
         }
         Debug.Log("GrapplePoints: " + test);
         mainChar = GameObject.FindWithTag("Player");
-
+        Debug.Log("mainChar:" + mainChar);
         origGravScale = mainChar.GetComponent<Rigidbody2D>().gravityScale;
 
     }
@@ -69,7 +69,7 @@ public class Grapple : MonoBehaviour
             Reset();
         }
 
-        Debug.Log("grappling: " + grappling + " grappleTo: " + grappleTo);
+        //Debug.Log("grappling: " + grappling + " grappleTo: " + grappleTo);
         if (grappling && !grappleTo)
         {
             GrappleSwing();
@@ -156,7 +156,10 @@ public class Grapple : MonoBehaviour
         }
 
         //If grapplePoint is closer than grappleSwing then use grapplePoint/You are grapplingTo. If not, use grappleSwing/You are not grapplingTo.
-        if (Mathf.Sqrt(Mathf.Pow(mainChar.transform.position.x - grapplePoint.transform.position.x, 2) + Mathf.Pow(mainChar.transform.position.y - grapplePoint.transform.position.y, 2)) < Mathf.Sqrt(Mathf.Pow(mainChar.transform.position.x - grappleSwing.transform.position.x, 2) + Mathf.Pow(mainChar.transform.position.y - grappleSwing.transform.position.y, 2)))
+        Debug.Log("GrapplePoint: " + grapplePoint);
+        Debug.Log("GrapplePoint: " + grappleSwing);
+
+        if (grapplePoint != null && (grappleSwing == null || Mathf.Sqrt(Mathf.Pow(mainChar.transform.position.x - grapplePoint.transform.position.x, 2) + Mathf.Pow(mainChar.transform.position.y - grapplePoint.transform.position.y, 2)) < Mathf.Sqrt(Mathf.Pow(mainChar.transform.position.x - grappleSwing.transform.position.x, 2) + Mathf.Pow(mainChar.transform.position.y - grappleSwing.transform.position.y, 2))))
         {
             grappleTo = true;
         } else 

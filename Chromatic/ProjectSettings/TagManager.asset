@@ -17,6 +17,7 @@ TagManager:
   - GrappleSwing
   - Octo Boss Head
   - YELLOW
+  - Armadillo Boss
   layers:
   - Default
   - TransparentFX

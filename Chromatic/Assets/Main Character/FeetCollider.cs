@@ -8,10 +8,12 @@ public class FeetCollider : MonoBehaviour
     private Rigidbody2D rb;
     private Animator am;
     private LayerMask Default = 0;
+    public bool noAbility;
 
     // Start is called before the first frame update
     void Start()
     {
+        noAbility = false;
         jumpCounter = 2;
         //rb = transform.parent.gameObject.GetComponent<Rigidbody2D>();
         rb = GetComponentInParent<Rigidbody2D>();
@@ -44,7 +46,8 @@ public class FeetCollider : MonoBehaviour
     }
     public void DoubleJump()
     {
-        if (jumpCounter != 0 && !GetComponentInParent<Movement>().swimming)
+        //also makes sure that player can't double jump if doesn't have ability
+        if (jumpCounter != 0 && !GetComponentInParent<Movement>().swimming && !(jumpCounter < 2 && noAbility))
         {
             //am.SetInteger("DoubleJump", 1);
             am.SetBool("isJumping", true);
@@ -76,4 +79,10 @@ public class FeetCollider : MonoBehaviour
         am.SetBool("isJumping", false);
         am.SetBool("isDoubleJump", false);
     }
+
+    public int GetJumpCounter()
+    {
+        return jumpCounter;
+    }
+
 }

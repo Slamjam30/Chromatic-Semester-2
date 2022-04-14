@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Post_Boss_Transitions : MonoBehaviour
 {
+    public GameObject changeSceneObject;
     private string currentScene;
     private GameObject mainChar;
 
@@ -17,7 +18,9 @@ public class Post_Boss_Transitions : MonoBehaviour
         {
             mainChar.GetComponent<Health>().raiseToMaxHealth();
             mainChar.GetComponent<Health>().startPos = new Vector3(258.600006f, -19.8099995f, 0);
-
+            mainChar.transform.position = new Vector3(258.600006f, -19.8099995f, 0);
+            //Add an UnGrayscale Object to the level to color in while walking back
+            changeSceneObject.SetActive(true);
         }
     }
 

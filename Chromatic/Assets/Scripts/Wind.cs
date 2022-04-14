@@ -11,6 +11,8 @@ public class Wind : MonoBehaviour
     private GameObject mainChar;
     private bool done = true;
     private bool inWind;
+    private bool firstBlow;
+    private Animator am;
 
     // Start is called before the first frame update
     void Start()
@@ -18,6 +20,8 @@ public class Wind : MonoBehaviour
         mainChar = GameObject.FindWithTag("Player");
         blowing = true;
         inWind = false;
+        firstBlow = false;
+        am = gameObject.GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -26,8 +30,15 @@ public class Wind : MonoBehaviour
         //When blowing, add acceleration to inWind object
         if (blowing && inWind && !mainChar.GetComponent<Bubble>().getActive())
         {
-            mainChar.GetComponent<Rigidbody2D>().AddForce(new Vector2(mainChar.GetComponent<Rigidbody2D>().mass * pushAcceleration, 0.1f));
-
+            if (mainChar.GetComponent<Dash>().isDashing)
+            {
+                mainChar.GetComponent<Rigidbody2D>().velocity = new Vector2(0f, 0f);
+            }
+            else
+            {
+                mainChar.GetComponent<Rigidbody2D>().AddForce(new Vector2(mainChar.GetComponent<Rigidbody2D>().mass * pushAcceleration, 0.1f));
+            }
+            
         }
         //TO-DO: TURN A CANVAS OF WIND PARTICLES ON/OFF WITH BLOWING IF inWind
 
@@ -35,25 +46,42 @@ public class Wind : MonoBehaviour
         {
             StartCoroutine(WindCooldown());
         }
+
+        
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        inWind = true;
+        if (collision.tag == "Player")
+        {
+            inWind = true;
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        inWind = false;
+        if (collision.tag == "Player")
+        {
+            inWind = false;
+        }
     }
 
     public IEnumerator WindCooldown()
     {
         done = false;
         Debug.Log("Running WindCooldown()");
+        gameObject.GetComponent<SpriteRenderer>().enabled = true;
+        am.SetBool("Blowing", true);
+        //Waits .663 seconds- the amount of time for the wind to fill the wind box in the animation.
+        yield return new WaitForSeconds(.633f);
         blowing = true;
+        //Sprite enables and animation runs
         yield return new WaitForSeconds(timeBetweenBlows);
+        //Disables SpriteRenderer (will give animation enough time to finish) and returns to no_wind animation
+        gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        am.SetBool("Blowing", false);
         blowing = false;
+        firstBlow = false;
         yield return new WaitForSeconds(timeBetweenBlows);
         done = true;
     }

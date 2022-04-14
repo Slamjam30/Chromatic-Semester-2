@@ -70,4 +70,9 @@ public class Bubble : MonoBehaviour
         return triggered;
     }
 
+    public bool GetIfCooled()
+    {
+        return cooled;
+    }
+
 }

@@ -42,6 +42,9 @@ public class Movement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        TrackAbilityUnlocks();
+
         //Debug.Log("canMove: " + canMove + " canMoveBubble: " + canMoveBubble);
 
         //Uses both just in case use bubble while can't move
@@ -155,4 +158,44 @@ public class Movement : MonoBehaviour
         transform.localScale = flipScale;
         facingRight = !facingRight;
     }
+
+    private void TrackAbilityUnlocks()
+    {
+        if (Globals.color == "WHITE")
+        {
+            this.transform.GetChild(0).GetComponent<FeetCollider>().noAbility = true;
+            gameObject.GetComponent<Bubble>().enabled = false;
+            gameObject.GetComponent<Dash>().enabled = false;
+            gameObject.GetComponent<Grapple>().enabled = false;
+        }
+        else if (Globals.color == "GREEN")
+        {
+            this.transform.GetChild(0).GetComponent<FeetCollider>().noAbility = false;
+            gameObject.GetComponent<Bubble>().enabled = false;
+            gameObject.GetComponent<Dash>().enabled = false;
+            gameObject.GetComponent<Grapple>().enabled = false;
+        }
+        else if (Globals.color == "BLUE")
+        {
+            this.transform.GetChild(0).GetComponent<FeetCollider>().noAbility = false;
+            gameObject.GetComponent<Bubble>().enabled = true;
+            gameObject.GetComponent<Dash>().enabled = false;
+            gameObject.GetComponent<Grapple>().enabled = false;
+        }
+        else if (Globals.color == "YELLOW")
+        {
+            this.transform.GetChild(0).GetComponent<FeetCollider>().noAbility = false;
+            gameObject.GetComponent<Bubble>().enabled = true;
+            gameObject.GetComponent<Dash>().enabled = true;
+            gameObject.GetComponent<Grapple>().enabled = false;
+        }
+        else if (Globals.color == "RED")
+        {
+            this.transform.GetChild(0).GetComponent<FeetCollider>().noAbility = false;
+            gameObject.GetComponent<Bubble>().enabled = true;
+            gameObject.GetComponent<Dash>().enabled = true;
+            gameObject.GetComponent<Grapple>().enabled = true;
+        }
+    }
+
 }
