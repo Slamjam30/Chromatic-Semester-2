@@ -38057,7 +38057,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &858313554
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -38117,7 +38117,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 858313553}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 6, y: -3, z: 0}
+  m_LocalPosition: {x: 0, y: -3.9, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children: []
   m_Father: {fileID: 0}
@@ -38135,11 +38135,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: babaebd6c93af374ca0464c54124356c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dashSpeed: 0.3
-  jumpTime: 0.5
-  slashTime: 1
+  startY: -4
+  startX: 0
+  stageWidth: 18
+  dashSpeed: 0.2
+  jumpTime: 0.75
+  jumpHeight: 5
+  slashTime: 2
   slashHurtPercent: 0.5
-  wanderTime: 1
+  wanderTime: 3
+  downedTime: 6
+  time: 0
+  slashin: 0
+  phaseVal: 0
+  startTime: 0
   target: {fileID: 131919890}
 --- !u!58 &858313557
 CircleCollider2D:

@@ -4,23 +4,28 @@ using UnityEngine;
 
 public class Armadillo : MonoBehaviour
 {
+    public float startY;
+    public float startX;
+    public float stageWidth;
     public float dashSpeed;
     public float jumpTime;
+    public float jumpHeight;
     private float grav;
     public float slashTime;
     // A float between 0 and 1 that indicates how much of the slashTime will have the extended claws
     public float slashHurtPercent;
 
     public float wanderTime;
+    public float downedTime;
     private float wTime;
     //time
-    private float time;
+    public float time;
 
     //states/bools
-    private bool slashin;
+    public bool slashin;
 
-    private int phaseVal;
-    private float startTime;
+    public int phaseVal;
+    public float startTime;
     private float xSpeed;
     private float ySpeed;
     private int prevOrient;
@@ -31,10 +36,10 @@ public class Armadillo : MonoBehaviour
     void Start()
     {
         time = 0.0f;
-        phaseVal = 0;
+        phaseVal = 8;
         startTime = 0.0f;
         slashin = false;
-        grav = -32 / Mathf.Pow(jumpTime, 2);
+        grav = -(2 * jumpHeight * jumpHeight) / Mathf.Pow(jumpTime, 2);
         ySpeed = 0.0f;
         xSpeed = 0.0f;
         prevOrient = 1;
@@ -49,7 +54,7 @@ public class Armadillo : MonoBehaviour
             //dash
             case 0:
                 dash();
-                if (Mathf.Abs(transform.position.x) > 8 || slashin)
+                if (Mathf.Abs(transform.position.x - startX) > stageWidth || slashin)
                 {
                     phaseVal = 2;
                     startTime = time;
@@ -63,7 +68,7 @@ public class Armadillo : MonoBehaviour
                     phaseVal = 2;
                     startTime = time;
                     slashin = false;
-                    transform.position = new Vector2(transform.position.x + xSpeed * Time.deltaTime, -3.0f);
+                    transform.position = new Vector2(transform.position.x + xSpeed * Time.deltaTime, startY);
                 }
                 break;
             //slash
@@ -75,6 +80,23 @@ public class Armadillo : MonoBehaviour
                     transform.Translate(-prevOrient * 2.0f, 0.0f, 0.0f);
                     phaseVal = 8;
                     startTime = time;
+                }
+                break;
+            //downed state
+            case 3:
+                if (transform.position.y > startY)
+                {
+                    transform.Translate(0.0f, -0.1f, 0.0f);
+                }
+                else
+                {
+                    transform.position = new Vector2(transform.position.x, startY);
+                }
+                if (time - startTime >= wanderTime)
+                {
+                    slashin = false;
+                    startTime = time;
+                    phaseVal = 8;
                 }
                 break;
             //in between/wanders and chooses next attack
@@ -95,7 +117,7 @@ public class Armadillo : MonoBehaviour
 
     private void dash()
     {
-        if (Mathf.Pow(Mathf.Abs(transform.position.x - target.position.x), 2) + 3.5 * Mathf.Pow(Mathf.Abs(transform.position.y - target.position.y), 2) < 25)
+        if (Mathf.Pow(Mathf.Abs(transform.position.x - target.position.x), 2) + 3.5 * Mathf.Pow(Mathf.Abs(transform.position.y - target.position.y), 2) < 16)
         {
             slashin = true;
         }
@@ -146,5 +168,17 @@ public class Armadillo : MonoBehaviour
             return 1;
         }
         return -1;
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Woter")
+        {
+            Debug.Log("Yoooo its totaly working yay");
+            phaseVal = 3;
+            startTime = time;
+            slashin = false;
+            transform.localScale = new Vector3(2.0f, 2.0f, 1.0f);
+        }
     }
 }
