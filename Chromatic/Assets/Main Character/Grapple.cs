@@ -64,7 +64,7 @@ public class Grapple : MonoBehaviour
         }
 
         //When grappleTO and reached point, Unlock movement and stop Grappling, and put it on a cooldown
-        if (grappleTo && grapplePoint != null && Mathf.Abs(mainChar.transform.position.x - grapplePoint.transform.position.x) <= 0.5f && Mathf.Abs(mainChar.transform.position.x - grapplePoint.transform.position.x) <= 0.5f)
+        if (grappleTo && grapplePoint != null && Mathf.Abs(mainChar.transform.position.x - grapplePoint.transform.position.x) <= 0.5f && Mathf.Abs(mainChar.transform.position.x - grapplePoint.transform.position.y) <= 0.5f)
         {
             Reset();
         }
@@ -73,7 +73,7 @@ public class Grapple : MonoBehaviour
         if (grappling && !grappleTo)
         {
             GrappleSwing();
-            grappleSwing.gameObject.GetComponent<SpringJoint2D>().distance = 5f;
+            //grappleSwing.gameObject.GetComponent<SpringJoint2D>().distance = 5f;
         }
 
     }
@@ -83,14 +83,14 @@ public class Grapple : MonoBehaviour
         //Have G reveal rope and attach to it
 
         grappleSwingBox = grappleSwing.GetComponent<SimplifiedRopeSwing>().objectThatIsHangingFromTheRope.gameObject;
+        grappleSwingBox.GetComponent<BoxCollider2D>().enabled = true;
 
         mainChar.transform.position = grappleSwingBox.transform.position;
 
-
         move = Input.GetAxis("Horizontal");
 
-        grappleSwingBox.GetComponent<Rigidbody2D>().AddForce(new Vector2(move, 0));
-
+        grappleSwingBox.GetComponent<Rigidbody2D>().AddForce(new Vector2(move * 100f, 0));
+        Debug.Log("Force Added: " + new Vector2(move * 100f, 0));
 
         //getComponent ObjectThatIsHanging from SimplifiedRopeSwing
 
@@ -123,6 +123,12 @@ public class Grapple : MonoBehaviour
         mainChar.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         var step = grappleSpeed * Time.deltaTime;
         mainChar.transform.position = Vector2.MoveTowards(new Vector2(mainChar.transform.position.x, mainChar.transform.position.y), new Vector2(grapplePoint.position.x, grapplePoint.position.y), step);
+        
+        //Enable the LineRenderer and set its two positions to the main char and the grapple point- MAY NEED TO ADJUST THE POS OF MAINCHAR POINT TO ALIGN WITH SPRITE
+        Vector3[] positions = new Vector3[] {mainChar.transform.position, grapplePoint.position };
+        mainChar.GetComponent<LineRenderer>().enabled = true;
+        mainChar.GetComponent<LineRenderer>().positionCount = 2;
+        mainChar.GetComponent<LineRenderer>().SetPositions(positions);
     }
 
     public void StartGrapple()
@@ -132,7 +138,9 @@ public class Grapple : MonoBehaviour
         //Sets closest point to grapplePoint
         foreach (GameObject point in grapplePoints)
         {
-            if (Mathf.Sqrt(Mathf.Pow(mainChar.transform.position.x - point.transform.position.x, 2) + Mathf.Pow(mainChar.transform.position.y - point.transform.position.y, 2)) < dFromChar)
+            //ALSO CHECKS if further than 0.5 x- or y- pos so don't grapple to one you're on
+
+            if (Mathf.Sqrt(Mathf.Pow(mainChar.transform.position.x - point.transform.position.x, 2) + Mathf.Pow(0.5f * mainChar.transform.position.y - 0.5f * point.transform.position.y, 2)) < dFromChar && (Mathf.Abs(mainChar.transform.position.x - point.transform.position.x) > 0.5f || Mathf.Abs(mainChar.transform.position.y - point.transform.position.y) > 0.5f ))
             {
                 //Get the point that is closest to main character
                 grapplePoint = point.transform;
@@ -176,6 +184,7 @@ public class Grapple : MonoBehaviour
 
         if (!grappleTo && (Mathf.Abs(mainChar.transform.position.x - grappleSwing.transform.position.x) <= maxGrappleDistance && Mathf.Abs(mainChar.transform.position.x - grappleSwing.transform.position.x) <= maxGrappleDistance))
         {
+            grappleSwing.GetComponent<SimplifiedRopeSwing>().objectThatIsHangingFromTheRope.gameObject.transform.position = mainChar.transform.position;
             grappleSwing.gameObject.GetComponent<LineRenderer>().enabled = true;
             //grappleSwing.gameObject.GetComponent<DistanceJoint2D>().connectedBody = mainChar.GetComponent<Rigidbody2D>();
             //grappleSwing.gameObject.GetComponent<DistanceJoint2D>().distance = swingDistance;
@@ -189,9 +198,22 @@ public class Grapple : MonoBehaviour
 
     public void Reset()
     {
+        mainChar.GetComponent<LineRenderer>().enabled = false;
+        grappleSwing.GetComponent<SimplifiedRopeSwing>().objectThatIsHangingFromTheRope.gameObject.GetComponent<BoxCollider2D>().enabled = false;
         mainChar.GetComponent<Movement>().canMove = true;
         grappling = false;
         mainChar.GetComponent<Rigidbody2D>().gravityScale = origGravScale;
         GameObject.Find("FeetCollider").GetComponent<FeetCollider>().GrappleResetJump();
+        grappleSwing.gameObject.GetComponent<LineRenderer>().enabled = false;
+
     }
+
+    public void RecalculatePoints()
+    {
+        grapplePoints = GameObject.FindGameObjectsWithTag("GrapplePoint");
+        grappleSwings = GameObject.FindGameObjectsWithTag("GrappleSwing");
+
+        //New array that is the length of GrapplePoints and Swings combined
+    }
+
 }

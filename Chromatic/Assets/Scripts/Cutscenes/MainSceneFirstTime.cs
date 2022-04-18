@@ -11,6 +11,9 @@ public class MainSceneFirstTime : MonoBehaviour
     public GameObject blueUngrayscale;
     public GameObject yellowTilemap;
     public GameObject fallingSand;
+    public GameObject yellowUngrayscale;
+    public GameObject yellowBarrier;
+    public GameObject fireTree;
 
 
     private GameObject mainCam;
@@ -22,6 +25,7 @@ public class MainSceneFirstTime : MonoBehaviour
 
     private bool blueDone;
     private bool yellowDone;
+    private bool redDone;
 
     // Start is called before the first frame update
     void Start()
@@ -41,7 +45,7 @@ public class MainSceneFirstTime : MonoBehaviour
         //Manually Set this for debugging
         if (debugColor)
         {
-            Globals.color = "YELLOW";
+            Globals.color = "RED";
         }
 
         mainCam = GameObject.Find("Main Camera");
@@ -76,6 +80,26 @@ public class MainSceneFirstTime : MonoBehaviour
             foreach (GameObject blueObj in GameObject.FindGameObjectsWithTag("BLUE"))
             {
                 Destroy(blueObj);
+            }
+            mainChar.transform.position = new Vector3(29.3099995f, -2, 0);
+            mainChar.GetComponent<Health>().startPos = new Vector3(29.3099995f, -2, 0);
+
+        }
+
+        if (Globals.color == "RED")
+        {
+            greenBarrier.SetActive(true);
+            blueBarrier.SetActive(true);
+            yellowBarrier.SetActive(true);
+            Destroy(blueUngrayscale);
+            Destroy(yellowUngrayscale);
+            foreach (GameObject blueObj in GameObject.FindGameObjectsWithTag("BLUE"))
+            {
+                Destroy(blueObj);
+            }
+            foreach (GameObject yellowObj in GameObject.FindGameObjectsWithTag("YELLOW"))
+            {
+                Destroy(yellowObj);
             }
             mainChar.transform.position = new Vector3(29.3099995f, -2, 0);
             mainChar.GetComponent<Health>().startPos = new Vector3(29.3099995f, -2, 0);
@@ -120,6 +144,11 @@ public class MainSceneFirstTime : MonoBehaviour
             StartCoroutine(YellowCutscene());
         }
 
+        if (Globals.color == "RED" && !redDone)
+        {
+            StartCoroutine(RedCutscene());
+        }
+
     }
 
 
@@ -129,6 +158,24 @@ public class MainSceneFirstTime : MonoBehaviour
         Destroy(mainCam.GetComponent<CameraFollow>());
 
         startScene = true;
+    }
+
+    public IEnumerator RedCutscene()
+    {
+        redDone = true;
+        //Show Red Door
+        mainCam.transform.position = new Vector3(-6.0999999f, 12.5f, -10);
+        mainCam.GetComponent<Camera>().orthographicSize = 6f;
+        door.GetComponent<Animator>().SetBool("DoorRed", true);
+        yield return new WaitForSeconds(2f);
+        mainCam.transform.position = new Vector3(-46.9399986f, 0, -10);
+        //Wait until Ungrayscale is over then run falling sand anim- delete grayscale layer just in case it's still there
+        yield return new WaitForSeconds(8f);
+        fireTree.GetComponent<Animator>().SetBool("onFire", true);
+        yield return new WaitForSeconds(2f);
+        Destroy(fireTree);
+        mainCam.transform.position = POSITION;
+        mainCam.GetComponent<Camera>().orthographicSize = SIZE;
     }
 
     public IEnumerator YellowCutscene()

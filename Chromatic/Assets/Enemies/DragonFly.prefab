@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4057588549839609837}
   - component: {fileID: 1929736586887445674}
   - component: {fileID: 6347473653931406320}
-  - component: {fileID: 5706489407856346561}
+  - component: {fileID: 8401364590666805455}
   m_Layer: 6
   m_Name: DragonFly
   m_TagString: Enemy
@@ -161,8 +161,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 3
   immunityTimer: 2
+  octoHeadHealth: 0
   startPos: {x: 0, y: 0, z: 0}
---- !u!114 &5706489407856346561
+  knockedAmount: 5
+--- !u!114 &8401364590666805455
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -171,7 +173,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1436207341047019630}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 563ba11dd78c415438936933ffe526dc, type: 3}
+  m_Script: {fileID: 11500000, guid: ea38890b8689a0e438900f3f5ee5fc75, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   moveXRight: 5

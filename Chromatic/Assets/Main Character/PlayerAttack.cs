@@ -44,6 +44,7 @@ public class PlayerAttack : MonoBehaviour
 
                     }
 
+                    //gameObject.GetComponent<PlayerSounds>().PlayerAttack();
                     timeBtwAttack = startTimeBtwAttack;
                     Debug.Log("MAIN CHAR ATTACKED");
                 }

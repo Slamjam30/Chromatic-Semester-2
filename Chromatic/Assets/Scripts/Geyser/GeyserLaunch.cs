@@ -6,6 +6,7 @@ public class GeyserLaunch : MonoBehaviour
 {
     private bool inGeyser;
     private Rigidbody2D mainCharRB;
+    [SerializeField] float yeetFactor;
 
     private void Start()
     {
@@ -17,7 +18,7 @@ public class GeyserLaunch : MonoBehaviour
         if (inGeyser)
         {
             Debug.Log("Adding Force");
-            mainCharRB.AddForce(new Vector2(0f, mainCharRB.mass * 30f));
+            mainCharRB.AddForce(new Vector2(0f, mainCharRB.mass * yeetFactor));
         }
     }
 

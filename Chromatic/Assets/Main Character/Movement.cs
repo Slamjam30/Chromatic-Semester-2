@@ -196,6 +196,13 @@ public class Movement : MonoBehaviour
             gameObject.GetComponent<Dash>().enabled = true;
             gameObject.GetComponent<Grapple>().enabled = true;
         }
+        else if (Globals.color == "DONE")
+        {
+            this.transform.GetChild(0).GetComponent<FeetCollider>().noAbility = false;
+            gameObject.GetComponent<Bubble>().enabled = true;
+            gameObject.GetComponent<Dash>().enabled = true;
+            gameObject.GetComponent<Grapple>().enabled = true;
+        }
     }
 
 }

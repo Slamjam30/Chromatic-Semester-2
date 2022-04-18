@@ -11,7 +11,6 @@ public class Wind : MonoBehaviour
     private GameObject mainChar;
     private bool done = true;
     private bool inWind;
-    private bool firstBlow;
     private Animator am;
 
     // Start is called before the first frame update
@@ -20,7 +19,6 @@ public class Wind : MonoBehaviour
         mainChar = GameObject.FindWithTag("Player");
         blowing = true;
         inWind = false;
-        firstBlow = false;
         am = gameObject.GetComponent<Animator>();
     }
 
@@ -81,7 +79,6 @@ public class Wind : MonoBehaviour
         gameObject.GetComponent<SpriteRenderer>().enabled = false;
         am.SetBool("Blowing", false);
         blowing = false;
-        firstBlow = false;
         yield return new WaitForSeconds(timeBetweenBlows);
         done = true;
     }

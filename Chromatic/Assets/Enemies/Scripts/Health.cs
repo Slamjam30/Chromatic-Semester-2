@@ -39,6 +39,11 @@ public class Health : MonoBehaviour
             return;
         }
 
+        if (gameObject.name == "Dragon" && other.gameObject.name == "Player")
+        {
+            ProcessHit(damageDealer.GetDamage());
+        }
+
         if (gameObject.tag == "Player" && !playerHit)
         {
             Rigidbody2D rb = gameObject.GetComponent<Rigidbody2D>();
@@ -149,7 +154,12 @@ public class Health : MonoBehaviour
     {
         health -= damage;
 
-        if (gameObject.tag == "Enemy" || gameObject.tag == "Flying Enemy" || gameObject.tag == "Armadillo Boss" || gameObject.tag == "Frog Boss")
+        if (gameObject.name == "Dragon")
+        {
+            octoHeadHealth -= damage;
+        }
+
+        if (gameObject.tag == "Enemy" || gameObject.tag == "Flying Enemy" || gameObject.tag == "Armadillo Boss" || gameObject.tag == "Frog Boss" || gameObject.tag == "Dragon Boss")
         {
             StartCoroutine(KnockEnemy(player, gameObject, knockedAmount));
             StartCoroutine(PlayerHitIndicator());
@@ -234,8 +244,28 @@ public class Health : MonoBehaviour
             GameObject.FindGameObjectWithTag("Player").GetComponent<Health>().raiseToMaxHealth();
             Globals.inFight = false;
 
+            //GameObject mainCam = GameObject.FindGameObjectWithTag("MainCamera");
+            //mainCam.GetComponent<Camera>().orthographicSize = 9f;
+            //mainCam.GetComponent<CameraFollow>().following = true;
+
+            Destroy(GameObject.Find("Exit"));
             Destroy(gameObject);
         }
+
+        if (tag == "Dragon Boss")
+        {
+            Globals.color = "DONE";
+            Globals.inFight = false;
+
+            GameObject mainCam = GameObject.FindGameObjectWithTag("MainCamera");
+            mainCam.GetComponent<Camera>().orthographicSize = 3.538258f;
+            mainCam.GetComponent<CameraFollow>().following = true;
+
+            Destroy(GameObject.Find("Exit"));
+            Destroy(GameObject.Find("Barrier"));
+            Destroy(GameObject.Find("Dragon Stuff"));
+        }
+
 
     }
 

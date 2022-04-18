@@ -18,6 +18,8 @@ TagManager:
   - Octo Boss Head
   - YELLOW
   - Armadillo Boss
+  - RED
+  - Dragon Boss
   layers:
   - Default
   - TransparentFX
