@@ -39949,6 +39949,10 @@ PrefabInstance:
       propertyPath: background
       value: 
       objectReference: {fileID: 811389967}
+    - target: {fileID: 8730608948275178695, guid: 0623c7f555869dc478dd68d89280c27f, type: 3}
+      propertyPath: acceleration
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 8730608948275178713, guid: 0623c7f555869dc478dd68d89280c27f, type: 3}
       propertyPath: m_RootOrder
       value: 3

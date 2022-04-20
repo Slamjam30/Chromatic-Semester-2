@@ -11,10 +11,13 @@ public class Dash : MonoBehaviour
     public float cooldownTime = 5f;
     private bool cooled;
     private bool startedCool;
+    private Animator am;
+    public CapsuleCollider2D slipCapsule;
 
-// Start is called before the first frame update
-void Start()
+    // Start is called before the first frame update
+    void Start()
     {
+        am = GetComponent<Animator>();
         cooled = true;
     }
 
@@ -42,12 +45,16 @@ void Start()
     IEnumerator DoDash(float direction)
     {
         isDashing = true;
+        am.SetBool("isDashing", true);
         rb.velocity = new Vector2(rb.velocity.x, 0f);
+        slipCapsule.enabled = false;
         rb.AddForce(new Vector2(direction * dashDistance, 0f), ForceMode2D.Impulse);
         float gravity = rb.gravityScale;
         rb.gravityScale = 0;
         yield return new WaitForSeconds(dashTime);
         isDashing = false;
+        am.SetBool("isDashing", false);
+        slipCapsule.enabled = true; // enables slip
         rb.gravityScale = gravity;
         cooled = false;
         //Debug.Log("yo im totally dashing frfr.");

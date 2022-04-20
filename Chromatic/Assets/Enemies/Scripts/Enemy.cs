@@ -20,8 +20,11 @@ public class Enemy : MonoBehaviour
 
     public bool atPlayer = false;
 
+    private Animator am;
+
     void Start()
     {
+        am = gameObject.GetComponent<Animator>();
         mainCharacter = GameObject.FindWithTag("Player");
         moveDistanceRight = new Vector3(moveXRight, 0, 0);
         moveDistanceLeft = new Vector3(moveXLeft, 0, 0);
@@ -70,6 +73,7 @@ public class Enemy : MonoBehaviour
 
     private void MoveRight()
     {
+        am.SetBool("Walking", true);
         var step = moveSpeed * Time.deltaTime;
         transform.position = Vector2.MoveTowards(transform.position, new Vector3(waypointRight.x, transform.position.y, transform.position.z), step);
 
@@ -77,12 +81,14 @@ public class Enemy : MonoBehaviour
 
     private void MoveLeft()
     {
+        am.SetBool("Walking", true);
         var step = moveSpeed * Time.deltaTime;
         transform.position = Vector2.MoveTowards(transform.position, new Vector3(waypointLeft.x, transform.position.y, transform.position.z), step);
     }
 
     private void MoveTowardsPlayer()
     {
+        am.SetBool("Walking", true);
         if (transform.position.x < mainCharacter.transform.position.x)
         { sr.flipX = true; }
         else if (transform.position.x > mainCharacter.transform.position.x)

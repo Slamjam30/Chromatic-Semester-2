@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Bubble : MonoBehaviour
 {
-    //reload
     //bubb is the bubble sprite- a child object of the main character
     public GameObject bubb;
     private Rigidbody2D rigBody;
@@ -12,12 +11,14 @@ public class Bubble : MonoBehaviour
     [SerializeField] float cooldown = 3f;
     public bool triggered;
     private bool cooled = true;
+    private Animator am;
 
     // Start is called before the first frame update
     void Start()
     {
         rigBody = gameObject.GetComponent<Rigidbody2D>();
         bubb.SetActive(false); //hides object
+        am = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -30,6 +31,7 @@ public class Bubble : MonoBehaviour
         if (triggered == true)
         {
             bubb.SetActive(true);
+            am.SetBool("isBubble", true);
             if (gameObject.GetComponent<Movement>().swimming == true)
             {
                 //rigBody.velocity = new Vector2(rigBody.velocity.x, yVelocity);
@@ -39,24 +41,13 @@ public class Bubble : MonoBehaviour
                 }
                 rigBody.AddForce(new Vector2(0, rigBody.mass * acceleration));
             }
-            else
-            {
-                gameObject.GetComponent<Movement>().canMoveBubble = false;
-                //If canMove is still true, set velocity to zero
-                //TO KEEP Y VELOCITY JUST DO new Vector2(0f, gameObject.GetComponent<Rigidbody2D>().velocity.y);
-                if (gameObject.GetComponent<Movement>().canMove)
-                {
-                    gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0f, gameObject.GetComponent<Rigidbody2D>().velocity.y);
-                }
-            }
         }
         else
         {
-            gameObject.GetComponent<Movement>().canMoveBubble = true;
+            am.SetBool("isBubble", false);
             bubb.SetActive(false);
         }
     }
-
 
     public IEnumerator Cooldown()
     {

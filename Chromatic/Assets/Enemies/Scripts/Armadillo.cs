@@ -31,10 +31,18 @@ public class Armadillo : MonoBehaviour
     private int prevOrient;
 
     public Transform target;
-    
+
+    public GameObject armadilloVisual;
+    private Animator am;
+    private bool slashAnimed;
+
+    private GameObject mainChar;
+
     // Start is called before the first frame update
     void Start()
     {
+        mainChar = GameObject.FindWithTag("Player");
+        am = armadilloVisual.GetComponent<Animator>();
         time = 0.0f;
         phaseVal = 8;
         startTime = 0.0f;
@@ -49,6 +57,21 @@ public class Armadillo : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (mainChar.transform.position.x < gameObject.transform.position.x)
+        {
+            armadilloVisual.GetComponent<SpriteRenderer>().flipX = false;
+            armadilloVisual.transform.rotation = new Quaternion(0, 0, 0.144952312f, 0.989438713f);
+        } else
+        {
+            armadilloVisual.GetComponent<SpriteRenderer>().flipX = true;
+            armadilloVisual.transform.rotation = new Quaternion(0, 0, -0.165858865f, 0.986149549f);
+        }
+
+
+
+
+        armadilloVisual.transform.position = gameObject.transform.position;
+
         switch (phaseVal)
         {
             //dash
@@ -84,6 +107,9 @@ public class Armadillo : MonoBehaviour
                 break;
             //downed state
             case 3:
+                am.SetBool("Slash", false);
+                am.SetBool("Downed", true);
+                am.SetBool("Rolling", false);
                 if (transform.position.y > startY)
                 {
                     transform.Translate(0.0f, -0.1f, 0.0f);
@@ -101,6 +127,9 @@ public class Armadillo : MonoBehaviour
                 break;
             //in between/wanders and chooses next attack
             case 8:
+                am.SetBool("Slash", false);
+                am.SetBool("Downed", false);
+                am.SetBool("Rolling", false);
                 transform.Translate(orient() * 0.05f, 0.0f, 0.0f);
                 if (time - startTime >= wTime)
                 {
@@ -117,6 +146,9 @@ public class Armadillo : MonoBehaviour
 
     private void dash()
     {
+        am.SetBool("Slash", false);
+        am.SetBool("Downed", false);
+        am.SetBool("Rolling", true);
         if (Mathf.Pow(Mathf.Abs(transform.position.x - target.position.x), 2) + 3.5 * Mathf.Pow(Mathf.Abs(transform.position.y - target.position.y), 2) < 16)
         {
             slashin = true;
@@ -126,7 +158,10 @@ public class Armadillo : MonoBehaviour
 
     private void jump()
     {
-        if(!slashin)
+        am.SetBool("Slash", false);
+        am.SetBool("Downed", false);
+        am.SetBool("Rolling", true);
+        if (!slashin)
         {
             slashin = true;
             xSpeed = orient() * Mathf.Abs(target.position.x - transform.position.x) / jumpTime;
@@ -151,12 +186,15 @@ public class Armadillo : MonoBehaviour
         //SLASH!
         else
         {
-            if(!slashin)
+            if (!slashin)
             {
                 slashin = true;
                 prevOrient = orient();
                 transform.Translate(prevOrient * 2.0f, 0.0f, 0.0f);
             }
+            am.SetBool("Slash", true);
+            am.SetBool("Downed", false);
+            am.SetBool("Rolling", false);
             transform.localScale = new Vector3(4.0f, 2.0f, 1.0f);
         }
     }
@@ -181,4 +219,11 @@ public class Armadillo : MonoBehaviour
             transform.localScale = new Vector3(2.0f, 2.0f, 1.0f);
         }
     }
+
+    private IEnumerator TurnOffJump()
+    {
+        yield return new WaitForSeconds(0.083f);
+        am.SetBool("Jump", false);
+    }
+
 }

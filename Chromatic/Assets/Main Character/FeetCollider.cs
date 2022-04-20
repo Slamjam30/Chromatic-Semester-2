@@ -42,20 +42,22 @@ public class FeetCollider : MonoBehaviour
             jumpCounter = 2;
             am.SetBool("isJumping", false);
             am.SetBool("isDoubleJump", false);
+            am.SetBool("isFalling", false);
         }
     }
     public void DoubleJump()
     {
-        //also makes sure that player can't double jump if doesn't have ability
         if (jumpCounter != 0 && !GetComponentInParent<Movement>().swimming && !(jumpCounter < 2 && noAbility))
         {
             //am.SetInteger("DoubleJump", 1);
             am.SetBool("isJumping", true);
+            am.SetBool("isFalling", false);
             rb.velocity = new Vector2(rb.velocity.x, 0);
             rb.AddForce(new Vector2(0, 8), ForceMode2D.Impulse);
             if (jumpCounter == 1)
             {
                 am.SetBool("isDoubleJump", true);
+                am.SetBool("isFalling", false);
                 //Adding more force to second jump to combat gravity
                 rb.AddForce(new Vector2(0, 2), ForceMode2D.Impulse);
             }
@@ -66,11 +68,17 @@ public class FeetCollider : MonoBehaviour
         if (jumpCounter > 1 && GetComponentInParent<Movement>().swimming)
         {
             am.SetBool("isJumping", true);
+            am.SetBool("isFalling", false);
             rb.velocity = new Vector2(rb.velocity.x, 0);
             rb.AddForce(new Vector2(0, 4), ForceMode2D.Impulse);
             jumpCounter--;
         }
 
+    }
+
+    public void EnterFallingAnim()
+    {
+        am.SetBool("isFalling", true);
     }
 
     public void GrappleResetJump()
@@ -84,5 +92,4 @@ public class FeetCollider : MonoBehaviour
     {
         return jumpCounter;
     }
-
 }

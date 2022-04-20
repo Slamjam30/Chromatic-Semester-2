@@ -167,10 +167,10 @@ public class MainSceneFirstTime : MonoBehaviour
         mainCam.transform.position = new Vector3(-6.0999999f, 12.5f, -10);
         mainCam.GetComponent<Camera>().orthographicSize = 6f;
         door.GetComponent<Animator>().SetBool("DoorRed", true);
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(3f);
         mainCam.transform.position = new Vector3(-46.9399986f, 0, -10);
         //Wait until Ungrayscale is over then run falling sand anim- delete grayscale layer just in case it's still there
-        yield return new WaitForSeconds(8f);
+        yield return new WaitForSeconds(7f);
         fireTree.GetComponent<Animator>().SetBool("onFire", true);
         yield return new WaitForSeconds(2f);
         Destroy(fireTree);

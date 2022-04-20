@@ -12,11 +12,13 @@ public class PlayerAttack : MonoBehaviour
     public int damage;
     private float moveInput;
     private int lastInput;
+    private Animator am;
     // Start is called before the first frame update
     void Start()
     {
         moveInput = 1;
         lastInput = 1;
+        am = GetComponentInParent<Animator>();
     }
 
 
@@ -35,6 +37,7 @@ public class PlayerAttack : MonoBehaviour
         {
             if (Input.GetKey(KeyCode.F))
             {
+                am.SetBool("isAttacking", true);
                 {
                     //Enemies must have the Enemy LAYER for this to work. OverlapCircleAll() uses the Enemy layer as a mask
                     Collider2D[] enemiesToDamage = Physics2D.OverlapCircleAll(attackpos.position, attackRange, whatisEnemies);
@@ -44,7 +47,6 @@ public class PlayerAttack : MonoBehaviour
 
                     }
 
-                    //gameObject.GetComponent<PlayerSounds>().PlayerAttack();
                     timeBtwAttack = startTimeBtwAttack;
                     Debug.Log("MAIN CHAR ATTACKED");
                 }
@@ -62,6 +64,10 @@ public class PlayerAttack : MonoBehaviour
         Gizmos.DrawWireSphere(attackpos.position, attackRange);
     }
 
+    private void EndAttackAnim()
+    {
+        am.SetBool("isAttacking", false);
+    }
 
     // is called to move the attack hitbox to face direction of main char
     void Flip(float horizontalInput)
