@@ -648,10 +648,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e36d2f8e31665ee4e94ec1285d6ec5f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GREEN: {fileID: 22100000, guid: 8a11c448de6583a4fbb28497b4072466, type: 2}
-  BLUE: {fileID: 22100000, guid: 17dfbc3b3277f6e429972214b1ffeeae, type: 2}
-  YELLOW: {fileID: 22100000, guid: 524436b45295ce14583afe1a699c24e1, type: 2}
-  RED: {fileID: 22100000, guid: b483f66ee9d631640a049fa96bb3d8c9, type: 2}
+  GREEN: {fileID: 22100000, guid: affb9dab361f3de48bb466543b9f2830, type: 2}
+  BLUE: {fileID: 22100000, guid: 78b97afb71734354396dd1c4fb7b2fcf, type: 2}
+  YELLOW: {fileID: 22100000, guid: af790dd47c8af1d49bf9df96ebcd5dd4, type: 2}
+  RED: {fileID: 22100000, guid: 2ae7e933723fb1c418db666deeeb82a3, type: 2}
 --- !u!120 &5568769850603634442
 LineRenderer:
   m_ObjectHideFlags: 0

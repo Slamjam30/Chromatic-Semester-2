@@ -278,12 +278,17 @@ public class Health : MonoBehaviour
 
             float angle = Mathf.Atan(dY / dX);
 
+            int dirX = -1;
+
             //For 2nd and 3rd Quadrant Angles
             if ((dX < 0 && dY > 0) || (dX < 0 && dY < 0))
-            { angle = -angle; }
+            { 
+                angle = -angle;
+                dirX = 1;
+            }
 
-            Vector2 velocity = new Vector2(amount * Mathf.Cos(angle), amount * Mathf.Sin(angle));
-
+            Vector2 velocity = new Vector2(dirX * amount * Mathf.Cos(angle), amount * Mathf.Sin(angle));
+            Debug.Log("Knock Back:" + new Vector2(dirX * amount * Mathf.Cos(angle), amount * Mathf.Sin(angle)));
             return velocity;
         }
         else
