@@ -29,8 +29,8 @@ public class Post_Boss_Transitions : MonoBehaviour
         {
             Destroy(optionalDelOldChangeScene);
             mainChar.GetComponent<Health>().raiseToMaxHealth();
-            mainChar.GetComponent<Health>().startPos = new Vector3(-2055.52002f, 119.389999f, 0);
-            mainChar.transform.position = new Vector3(-2055.52002f, 119.389999f, 0);
+            mainChar.GetComponent<Health>().startPos = new Vector3(-2069.97998f, 139.080002f, 0);
+            mainChar.transform.position = new Vector3(-2069.97998f, 139.080002f, 0);
             //Add an UnGrayscale Object to the level to color in while walking back
             changeSceneObject.SetActive(true);
         }
