@@ -31,6 +31,7 @@ public class Yellow_Boss_Start : MonoBehaviour
             mainCam.GetComponent<CameraFollow>().following = false;
             mainCam.GetComponent<Camera>().orthographicSize = 11.21242f;
             mainCam.GetComponent<CameraFollow>().freezePos = new Vector2(0.5f, 5.28999996f);
+            Destroy(gameObject);
         }
     }
 }

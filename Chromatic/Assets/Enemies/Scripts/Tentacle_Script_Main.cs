@@ -464,7 +464,9 @@ public class Tentacle_Script_Main : MonoBehaviour
             {
                 pos.y += 5.0f * Time.deltaTime;
             }
-            GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraFollow>().following = true;
+            //Weird if camera follows again so not doing it
+            //GameObject.FindGameObjectWithTag("Player").transform.localScale = new Vector3(0.418522537f, 0.380475014f, 3.14744139f);
+            //GameObject.FindGameObjectWithTag("MainCamera").GetComponent<CameraFollow>().following = true;
             Globals.inFight = false;
             Globals.color = "YELLOW";
             GameObject.FindGameObjectWithTag("Player").GetComponent<Health>().raiseToMaxHealth();

@@ -14,6 +14,9 @@ public class MainSceneFirstTime : MonoBehaviour
     public GameObject yellowUngrayscale;
     public GameObject yellowBarrier;
     public GameObject fireTree;
+    public GameObject redBarrier;
+    public GameObject redUngrayscale;
+    public GameObject stairs;
 
 
     private GameObject mainCam;
@@ -26,6 +29,7 @@ public class MainSceneFirstTime : MonoBehaviour
     private bool blueDone;
     private bool yellowDone;
     private bool redDone;
+    private bool doneDone;
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +37,8 @@ public class MainSceneFirstTime : MonoBehaviour
         //stuff not done
         blueDone = false;
         yellowDone = false;
+        redDone = false;
+        doneDone = false;
 
 
         //Camera Settings
@@ -101,8 +107,36 @@ public class MainSceneFirstTime : MonoBehaviour
             {
                 Destroy(yellowObj);
             }
-            mainChar.transform.position = new Vector3(29.3099995f, -2, 0);
-            mainChar.GetComponent<Health>().startPos = new Vector3(29.3099995f, -2, 0);
+            mainChar.transform.position = mainChar.transform.position = new Vector3(-23.3600006f, -1.82000005f, 0);
+            mainChar.GetComponent<Health>().startPos = new Vector3(-23.3600006f, -1.82000005f, 0);
+
+        }
+
+        if (Globals.color == "DONE")
+        {
+            greenBarrier.SetActive(true);
+            blueBarrier.SetActive(true);
+            yellowBarrier.SetActive(true);
+            redBarrier.SetActive(true);
+            Destroy(blueUngrayscale);
+            Destroy(yellowUngrayscale);
+            Destroy(redUngrayscale);
+            Destroy(fallingSand);
+            foreach (GameObject blueObj in GameObject.FindGameObjectsWithTag("BLUE"))
+            {
+                Destroy(blueObj);
+            }
+            foreach (GameObject yellowObj in GameObject.FindGameObjectsWithTag("YELLOW"))
+            {
+                Destroy(yellowObj);
+            }
+            foreach (GameObject redObj in GameObject.FindGameObjectsWithTag("RED"))
+            {
+                Destroy(redObj);
+            }
+            mainChar.transform.position = new Vector3(-38.6599998f, -1.72000003f, 0);
+            mainChar.GetComponent<Health>().startPos = new Vector3(-38.6599998f, -1.72000003f, 0);
+            door.GetComponent<Animator>().SetBool("DoorRed", true);
 
         }
 
@@ -149,6 +183,11 @@ public class MainSceneFirstTime : MonoBehaviour
             StartCoroutine(RedCutscene());
         }
 
+        if (Globals.color == "DONE" && !doneDone)
+        {
+            StartCoroutine(DoneCutscene());
+        }
+
     }
 
 
@@ -160,6 +199,18 @@ public class MainSceneFirstTime : MonoBehaviour
         startScene = true;
     }
 
+    public IEnumerator DoneCutscene()
+    {
+        doneDone = true;
+        //Show Path to Door
+        mainCam.transform.position = new Vector3(-19.2999992f, 3.9000001f, -10);
+        mainCam.GetComponent<Camera>().orthographicSize = 9.091533f;
+        stairs.GetComponent<Animator>().SetBool("MakePath", true);
+        yield return new WaitForSeconds(5f);
+        mainCam.transform.position = POSITION;
+        mainCam.GetComponent<Camera>().orthographicSize = SIZE;
+    }
+
     public IEnumerator RedCutscene()
     {
         redDone = true;
@@ -167,8 +218,9 @@ public class MainSceneFirstTime : MonoBehaviour
         mainCam.transform.position = new Vector3(-6.0999999f, 12.5f, -10);
         mainCam.GetComponent<Camera>().orthographicSize = 6f;
         door.GetComponent<Animator>().SetBool("DoorRed", true);
+        Destroy(fallingSand);
         yield return new WaitForSeconds(3f);
-        mainCam.transform.position = new Vector3(-46.9399986f, 0, -10);
+        mainCam.transform.position = new Vector3(-37.9000015f, 0, -10);
         //Wait until Ungrayscale is over then run falling sand anim- delete grayscale layer just in case it's still there
         yield return new WaitForSeconds(7f);
         fireTree.GetComponent<Animator>().SetBool("onFire", true);

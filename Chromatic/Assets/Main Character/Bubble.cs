@@ -30,6 +30,11 @@ public class Bubble : MonoBehaviour
 
         if (triggered == true)
         {
+            if (!gameObject.GetComponent<Movement>().swimming)
+            {
+                gameObject.GetComponent<Movement>().canMoveBubble = false;
+                gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, gameObject.GetComponent<Rigidbody2D>().velocity.y);
+            }
             bubb.SetActive(true);
             am.SetBool("isBubble", true);
             if (gameObject.GetComponent<Movement>().swimming == true)
@@ -44,6 +49,7 @@ public class Bubble : MonoBehaviour
         }
         else
         {
+            gameObject.GetComponent<Movement>().canMoveBubble = true;
             am.SetBool("isBubble", false);
             bubb.SetActive(false);
         }

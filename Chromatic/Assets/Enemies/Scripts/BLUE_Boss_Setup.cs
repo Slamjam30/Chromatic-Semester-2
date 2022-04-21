@@ -29,7 +29,7 @@ public class BLUE_Boss_Setup : MonoBehaviour
         if (collision.gameObject == mainChar)
         {
             //have to change mainChar size
-            mainChar.transform.localScale = new Vector3(0.15f, 0.15f, 1);
+            mainChar.transform.localScale = new Vector3(0.173247397f, 0.15749763f, 1.30288339f);
             blockingWall.SetActive(true);
             octopus.SetActive(true);
             mainChar.GetComponent<Health>().startPos = new Vector3(0, -2.5f, 0);

@@ -27,6 +27,7 @@ public class FrogBoss : MonoBehaviour
 
     //This is called when the frog dies in the health script.
     public GameObject returnToMainSceneTriggerObj;
+    public GameObject tutorialCanvas;
 
 
     [SerializeField] GameObject TONGUE_COLLIDER_LEFT;

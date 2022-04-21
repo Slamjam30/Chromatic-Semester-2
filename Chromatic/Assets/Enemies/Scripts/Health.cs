@@ -159,10 +159,15 @@ public class Health : MonoBehaviour
             octoHeadHealth -= damage;
         }
 
-        if (gameObject.tag == "Enemy" || gameObject.tag == "Flying Enemy" || gameObject.tag == "Armadillo Boss" || gameObject.tag == "Frog Boss" || gameObject.tag == "Dragon Boss")
+        if (gameObject.tag == "Enemy" || gameObject.tag == "Flying Enemy" || gameObject.tag == "Frog Boss" || gameObject.tag == "Dragon Boss")
         {
             StartCoroutine(KnockEnemy(player, gameObject, knockedAmount));
             StartCoroutine(PlayerHitIndicator());
+        }
+
+        if (gameObject.tag == "Armadillo Boss")
+        {
+            StartCoroutine(ArmadilloHitIndicator());
         }
 
         if (health <= 0 && tag == "Enemy")
@@ -204,9 +209,21 @@ public class Health : MonoBehaviour
     IEnumerator PlayerHitIndicator()
     {
         //Debug.Log("PlayerHitIndicator Ran");
+        //Because dragonflies may be colored yellow and then would return to not yellow if hit
+        Color orig = gameObject.GetComponent<SpriteRenderer>().color;
         gameObject.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0);
         yield return new WaitForSeconds(0.3f);
-        gameObject.GetComponent<SpriteRenderer>().color = new Color(255, 255, 255);
+        gameObject.GetComponent<SpriteRenderer>().color = orig;
+    }
+
+    IEnumerator ArmadilloHitIndicator()
+    {
+        //Debug.Log("PlayerHitIndicator Ran");
+        //Because dragonflies may be colored yellow and then would return to not yellow if hit
+        Color orig = gameObject.GetComponent<Armadillo>().armadilloVisual.GetComponent<SpriteRenderer>().color;
+        gameObject.GetComponent<Armadillo>().armadilloVisual.GetComponent<SpriteRenderer>().color = new Color(0, 0, 0);
+        yield return new WaitForSeconds(0.3f);
+        gameObject.GetComponent<Armadillo>().armadilloVisual.GetComponent<SpriteRenderer>().color = orig;
     }
 
     void BossDeath()
@@ -230,6 +247,8 @@ public class Health : MonoBehaviour
             Globals.maxHealth = 5;
             GameObject.FindGameObjectWithTag("Player").GetComponent<Health>().raiseToMaxHealth();
             gameObject.GetComponent<FrogBoss>().returnToMainSceneTriggerObj.SetActive(true);
+            gameObject.GetComponent<FrogBoss>().tutorialCanvas.SetActive(false);
+
 
             Destroy(gameObject);
             
@@ -248,8 +267,10 @@ public class Health : MonoBehaviour
             //mainCam.GetComponent<Camera>().orthographicSize = 9f;
             //mainCam.GetComponent<CameraFollow>().following = true;
 
+            gameObject.GetComponent<Armadillo>().afterBossActivate.SetActive(true);
+            GameObject.FindWithTag("Player").GetComponent<Grapple>().RecalculatePoints();
             Destroy(GameObject.Find("Exit"));
-            Destroy(gameObject);
+            Destroy(gameObject.GetComponent<Armadillo>().fullArmadillo);
         }
 
         if (tag == "Dragon Boss")

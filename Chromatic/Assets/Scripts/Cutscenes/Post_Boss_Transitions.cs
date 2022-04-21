@@ -33,6 +33,7 @@ public class Post_Boss_Transitions : MonoBehaviour
             mainChar.transform.position = new Vector3(-2069.97998f, 139.080002f, 0);
             //Add an UnGrayscale Object to the level to color in while walking back
             changeSceneObject.SetActive(true);
+            mainChar.GetComponent<Grapple>().RecalculatePoints();
         }
 
         if (currentScene == "RED" && Globals.color == "DONE")

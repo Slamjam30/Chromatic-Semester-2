@@ -38,6 +38,9 @@ public class Armadillo : MonoBehaviour
 
     private GameObject mainChar;
 
+    public GameObject afterBossActivate;
+    public GameObject fullArmadillo;
+
     // Start is called before the first frame update
     void Start()
     {

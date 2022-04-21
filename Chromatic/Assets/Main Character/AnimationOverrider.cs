@@ -31,6 +31,10 @@ public class AnimationOverrider : MonoBehaviour
         {
             am.runtimeAnimatorController = RED;
         }
+        else if (Globals.color.Equals("DONE"))
+        {
+            am.runtimeAnimatorController = RED;
+        }
     }
 
     // Update is called once per frame

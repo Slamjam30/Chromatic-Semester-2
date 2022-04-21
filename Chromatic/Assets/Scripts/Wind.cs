@@ -25,6 +25,8 @@ public class Wind : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //Debug.Log("isDashing:" + mainChar.GetComponent<Dash>().isDashing);
+
         //When blowing, add acceleration to inWind object
         if (blowing && inWind && !mainChar.GetComponent<Bubble>().getActive())
         {
@@ -43,6 +45,11 @@ public class Wind : MonoBehaviour
         if (done)
         {
             StartCoroutine(WindCooldown());
+        }
+
+        if (timeBetweenBlows == 0)
+        {
+            blowing = true;
         }
 
         
